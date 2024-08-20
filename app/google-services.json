@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "189255690311",
+    "project_id": "kkl-unissula",
+    "storage_bucket": "kkl-unissula.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:189255690311:android:153fb4eb4b75c52f6b6962",
+        "android_client_info": {
+          "package_name": "com.manifestasi.mykklunissula"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1oJBREmNol_QSB1HTeUpttFCu1vkWbqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

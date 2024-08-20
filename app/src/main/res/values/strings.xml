@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MyKKLUnissula</string>
+    <string name="welcome_to">Welcome to</string>
+    <string name="kkl">KULIAH KERJA LAPANGAN MAGISTER KENOTARIATAN FAKULTAS HUKUM UNISSULA SEMARANG</string>
+    <string name="nim_anda">Masukkan NIM anda...</string>
+    <string name="pass">Masukkan Password anda...</string>
+    <string name="masuk">Masuk</string>
+    <string name="login">Login</string>
 </resources>
