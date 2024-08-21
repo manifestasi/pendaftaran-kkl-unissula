@@ -40,6 +40,11 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        binding.tvRegister.setOnClickListener {
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
         observerLogin()
 
 
@@ -60,6 +65,7 @@ class LoginActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     Toast.makeText(this, "Login failed: ${resource.exception.message}", Toast.LENGTH_SHORT).show()
                 }
+                else -> {}
             }
         }
     }

@@ -6,4 +6,8 @@
     <string name="pass">Masukkan Password anda...</string>
     <string name="masuk">Masuk</string>
     <string name="login">Login</string>
+    <string name="text_register2">Register disini</string>
+    <string name="text_register">Belum punya akun?</string>
+    <string name="konfirmasi_password_anda">Konfirmasi password anda</string>
+    <string name="register">Register</string>
 </resources>
