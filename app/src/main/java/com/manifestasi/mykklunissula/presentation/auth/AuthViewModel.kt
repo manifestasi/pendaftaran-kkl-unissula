@@ -36,17 +36,19 @@ class AuthViewModel @Inject constructor(
     val registerResult: LiveData<Resource<FirebaseUser?>> = _registerResult
 
     fun registerUser(nim: String, password: String, confirmPass: String) {
-        viewModelScope.launch {
-            _registerResult.value = Resource.Loading
-            try {
-                val result = authRepository.registerUser(nim, password, confirmPass)
-                if (result.user != null) {
-                    _registerResult.value = Resource.Success(result.user)
-                } else {
-                    _registerResult.value = Resource.ErrorMessage("Something went wrong")
+        if (_registerResult.value == null){
+            viewModelScope.launch {
+                _registerResult.value = Resource.Loading
+                try {
+                    val result = authRepository.registerUser(nim, password, confirmPass)
+                    if (result.user != null) {
+                        _registerResult.value = Resource.Success(result.user)
+                    } else {
+                        _registerResult.value = Resource.ErrorMessage("Something went wrong")
+                    }
+                } catch (e: Exception) {
+                    _registerResult.value = Resource.ErrorMessage(e.message.toString())
                 }
-            } catch (e: Exception) {
-                _registerResult.value = Resource.ErrorMessage(e.message.toString())
             }
         }
     }

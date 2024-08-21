@@ -1,5 +1,7 @@
 package com.manifestasi.mykklunissula.presentation.auth
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -7,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import com.manifestasi.mykklunissula.MainActivity
 import com.manifestasi.mykklunissula.R
 import com.manifestasi.mykklunissula.databinding.ActivityRegisterBinding
 import com.manifestasi.mykklunissula.util.Resource
@@ -30,6 +33,7 @@ class RegisterActivity : AppCompatActivity() {
         setAction()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setAction(){
         binding.apply {
             btnRegister.setOnClickListener {
@@ -42,19 +46,22 @@ class RegisterActivity : AppCompatActivity() {
                     when (result){
                         is Resource.Loading -> {
                             btnRegister.isEnabled = false
-                            Toast.makeText(this@RegisterActivity, "Loading...", Toast.LENGTH_LONG).show()
+                            btnRegister.text = "Loading..."
                         }
                         is Resource.Success -> {
                             btnRegister.isEnabled = true
-                            Toast.makeText(this@RegisterActivity, "Register berhasil, silahkan login", Toast.LENGTH_SHORT).show()
-                            finish()
+                            Toast.makeText(this@RegisterActivity, "Register berhasil", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                            startActivity(intent)
                         }
                         is Resource.ErrorMessage -> {
                             btnRegister.isEnabled = true
                             Toast.makeText(this@RegisterActivity, result.message, Toast.LENGTH_LONG).show()
+                            btnRegister.text = "Register"
                         }
                         else -> {
                             btnRegister.isEnabled = true
+                            btnRegister.text = "Register"
                         }
                     }
                 }
