@@ -53,4 +53,17 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    private val resultLogout = MediatorLiveData<Boolean>()
+
+    fun logoutUser(): LiveData<Boolean> {
+        val loggedOut = authRepository.logoutUser()
+        if(loggedOut){
+            resultLogout.value = true
+        } else {
+            resultLogout.value = false
+        }
+
+        return resultLogout
+    }
+
 }
