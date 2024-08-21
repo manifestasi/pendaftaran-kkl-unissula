@@ -35,5 +35,17 @@ class MainActivity : AppCompatActivity() {
             finish()
             return
         }
+
+        binding.btnLn.setOnClickListener {
+            /* menuju form pendaftaran kkl luar negeri */
+        }
+
+        binding.btnDn.setOnClickListener {
+            /* menuju form pendaftaran kkl dalam negeri */
+        }
+
+        binding.btnPendaftar.setOnClickListener {
+            /* menuju list pendaftar */
+        }
     }
 }
