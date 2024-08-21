@@ -10,4 +10,23 @@
     <string name="text_register">Belum punya akun?</string>
     <string name="konfirmasi_password_anda">Konfirmasi password anda</string>
     <string name="register">Register</string>
+    <string name="kklluarnegeri">Pendaftaran KKL Luar Negeri</string>
+    <string name="Isidata">Isi Data Dibawah ini!</string>
+    <string name="nama">Nama Lengkap</string>
+    <string name="nim">NIM</string>
+    <string name="nohp">Nomor Telepon</string>
+    <string name="jeniskelamin">Jenis Kelamin</string>
+    <string name="laki">Laki Laki</string>
+    <string name="perempuan">Perempuan</string>
+    <string name="smtkelas">Semester dan kelas *cth : 7/RK4C</string>
+    <string name="tglberangkat">Tanggal keberangkatan</string>
+    <string name="tglpulang">Tanggal kepulangan</string>
+    <string name="email">Email</string>
+    <string name="wajib">Wajib Upload File</string>
+    <string name="scanktp">Scan KTP</string>
+    <string name="scanfoto">Scan Pas Foto</string>
+    <string name="scanpas">Scan Paspor</string>
+    <string name="simpan">Simpan</string>
+    <string name="kotaberangkat">Kota keberangkatan</string>
+    <string name="kotapulang">Kota kepulangan</string>
 </resources>

@@ -4,7 +4,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#8A9A5B</color>
     <color name="textcolor">#1C1E16</color>
+    <color name="textcolor2">#FF1A1C1A</color>
     <color name="hint">#801C1E16</color>
     <color name="background">#ECFFDC</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="green2">#C1E1C1</color>
 
 </resources>
