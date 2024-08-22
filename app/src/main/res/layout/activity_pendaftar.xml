@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".presentation.pendaftarkkl.PendaftarActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:id="@+id/iv_logo"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:src="@drawable/img_logo" />
+
+        <androidx.appcompat.widget.SearchView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            style="@style/CustomSearchView"
+            android:paddingBottom="8dp"
+            android:background="@drawable/rectangle_3"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:paddingHorizontal="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_list_pendaftar"/>
+    </LinearLayout>
+
+</LinearLayout>

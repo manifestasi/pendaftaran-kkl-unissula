@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.MyKKLUnissula" parent="Base.Theme.MyKKLUnissula" />
+
+    <style name="CustomSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="searchIcon">@drawable/ic_search</item>
+        <item name="iconifiedByDefault">false</item>
+        <item name="queryHint">Cari nama anda</item>
+    </style>
 </resources>
