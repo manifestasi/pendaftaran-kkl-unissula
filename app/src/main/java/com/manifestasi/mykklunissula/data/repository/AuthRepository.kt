@@ -49,6 +49,11 @@ class AuthRepository @Inject constructor(
         }
     }
 
+    fun logoutUser(): Boolean {
+        firebaseAuth.signOut()
+        return firebaseAuth.currentUser == null
+    }
+
     fun getCurrentUser(): FirebaseUser? {
         return firebaseAuth.currentUser
     }

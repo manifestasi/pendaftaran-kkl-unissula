@@ -10,4 +10,9 @@
     <string name="text_register">Belum punya akun?</string>
     <string name="konfirmasi_password_anda">Konfirmasi password anda</string>
     <string name="register">Register</string>
+    <string name="text_home_kkl">KULIAH KERJA LAPANGAN MAGISTER KENOTARIATAN FAKULTAS HUKUM UNISSULA SEMARANG</string>
+    <string name="text_card_1">KULIAH KERJA LAPANGAN LUAR NEGERI</string>
+    <string name="daftar">DAFTAR</string>
+    <string name="text_card_2">KULIAH KERJA LAPANGAN DALAM NEGERI</string>
+    <string name="text_card_3">DATA MAHASISWA YANG SUDAH TERDAFTAR</string>
 </resources>

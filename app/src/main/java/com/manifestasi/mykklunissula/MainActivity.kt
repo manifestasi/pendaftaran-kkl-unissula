@@ -2,6 +2,7 @@ package com.manifestasi.mykklunissula
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -34,6 +35,28 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
             return
+        }
+
+        binding.btnLn.setOnClickListener {
+            /* menuju form pendaftaran kkl luar negeri */
+        }
+
+        binding.btnDn.setOnClickListener {
+            /* menuju form pendaftaran kkl dalam negeri */
+        }
+
+        binding.btnPendaftar.setOnClickListener {
+            /* menuju list pendaftar */
+        }
+
+        binding.btnLogout.setOnClickListener {
+            authViewModel.logoutUser().observe(this@MainActivity){ result ->
+                if (result){
+                    finishAffinity()
+                } else {
+                    Toast.makeText(this@MainActivity, "Oops logout gagal", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 }
