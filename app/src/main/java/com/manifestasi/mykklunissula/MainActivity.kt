@@ -13,6 +13,7 @@ import com.manifestasi.mykklunissula.presentation.auth.AuthViewModel
 import com.manifestasi.mykklunissula.presentation.auth.LoginActivity
 import com.manifestasi.mykklunissula.presentation.pendaftarankkl.KklDalamNegeriActivity
 import com.manifestasi.mykklunissula.presentation.pendaftarankkl.KklLuarNegeriActivity
+import com.manifestasi.mykklunissula.presentation.profile.EditKKLLuarNegeriActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,6 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnPendaftar.setOnClickListener {
             /* menuju list pendaftar */
+            startActivity(Intent(this,EditKKLLuarNegeriActivity::class.java))
         }
 
         binding.btnLogout.setOnClickListener {

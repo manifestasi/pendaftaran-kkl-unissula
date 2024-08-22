@@ -30,4 +30,34 @@ class FormkklRepository @Inject constructor(
         }
     }
 
+    suspend fun getDataFromFirestore(): Map<String, Any>? {
+        return withContext(Dispatchers.IO) {
+            val uid = firebaseAuth.currentUser?.uid ?: throw IllegalStateException("User not logged in")
+            firebaseFirestore.collection("daftar_KKLluarnegeri").document("AsoSfJdBYBlZ0JwduYfJ").get().await().data
+        }
+    }
+
+    suspend fun updateDataInFirestore(userId: String, data: Map<String, Any>) {
+        withContext(Dispatchers.IO) {
+            firebaseFirestore.collection("users").document(userId).update(data).await()
+        }
+    }
+
+    suspend fun updateImage(scanType: ScanType, imageUri: Uri, previousUrl: String?): String {
+        return withContext(Dispatchers.IO) {
+            // Delete previous image if exists
+            previousUrl?.let {
+                firebaseStorage.getReferenceFromUrl(it).delete().await()
+            }
+
+            // Upload new image
+            val ref = firebaseStorage.reference.child("images/${scanType.name.lowercase()}_${System.currentTimeMillis()}.jpg")
+            ref.putFile(imageUri).await()
+            ref.downloadUrl.await().toString()
+        }
+    }
+
+
+
+
 }
