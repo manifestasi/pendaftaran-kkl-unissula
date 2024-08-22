@@ -1,18 +1,10 @@
 package com.manifestasi.mykklunissula.presentation.pendaftarankkl
 
 import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.manifestasi.mykklunissula.R
-import com.manifestasi.mykklunissula.databinding.ActivityKklLuarNegeriBinding
 import android.net.Uri
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,75 +12,46 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import androidx.core.net.toUri
-import androidx.lifecycle.ViewModelProvider
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.manifestasi.mykklunissula.BuildConfig
-import com.manifestasi.mykklunissula.util.CameraActivity
-import com.manifestasi.mykklunissula.util.CameraActivity.Companion.CAMERAX_RESULT
+import com.manifestasi.mykklunissula.R
+import com.manifestasi.mykklunissula.databinding.ActivityKklDalamNegeriBinding
 import com.manifestasi.mykklunissula.util.Resource
-import com.manifestasi.mykklunissula.util.getImageUri
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileOutputStream
 
 @AndroidEntryPoint
-class KklLuarNegeriActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityKklLuarNegeriBinding
+class KklDalamNegeriActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityKklDalamNegeriBinding
     private val viewmodel: PendaftaranKKLViewModel by viewModels()
     private var currentImageUri: Uri? = null
     private var ktpImageUri: Uri? = null
     private var fotoImageUri: Uri? = null
-    private var pasporImageUri: Uri? = null
     private var scanType: ScanType? = null
-
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                Toast.makeText(this, "Permission request granted", Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(this, "Permission request denied", Toast.LENGTH_LONG).show()
-            }
-        }
-
-    private fun allPermissionsGranted() =
-        ContextCompat.checkSelfPermission(
-            this,
-            REQUIRED_PERMISSION
-        ) == PackageManager.PERMISSION_GRANTED
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityKklLuarNegeriBinding.inflate(layoutInflater)
+        binding = ActivityKklDalamNegeriBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-//        if (!allPermissionsGranted()) {
-//            requestPermissionLauncher.launch(REQUIRED_PERMISSION)
-//        }
-
         binding.btnScanktp.setOnClickListener {
             scanType = ScanType.KTP
             startGallery()
         }
         binding.btnScanfoto.setOnClickListener {
             scanType = ScanType.FOTO
-            startGallery()
-        }
-        binding.btnScanpaspor.setOnClickListener {
-            scanType = ScanType.PASPOR
             startGallery()
         }
 
@@ -100,7 +63,6 @@ class KklLuarNegeriActivity : AppCompatActivity() {
 
         observeImage()
         observeData()
-
 
     }
 
@@ -125,20 +87,6 @@ class KklLuarNegeriActivity : AppCompatActivity() {
         }
     }
 
-    private fun startCameraX() {
-        val intent = Intent(this, CameraActivity::class.java)
-        launcherIntentCameraX.launch(intent)
-    }
-
-    private val launcherIntentCameraX = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode == CAMERAX_RESULT) {
-            currentImageUri = it.data?.getStringExtra(CameraActivity.EXTRA_CAMERAX_IMAGE)?.toUri()
-            showImage()
-        }
-    }
-
     private fun showImage() {
         currentImageUri?.let {
             when (scanType) {
@@ -152,12 +100,6 @@ class KklLuarNegeriActivity : AppCompatActivity() {
                     fotoImageUri = it
                     binding.rlFoto.visibility = View.VISIBLE
                     binding.ivPlaceholderFoto.setImageURI(it)
-                }
-
-                ScanType.PASPOR -> {
-                    pasporImageUri = it
-                    binding.rlPaspor.visibility = View.VISIBLE
-                    binding.ivPlaceholderPaspor.setImageURI(it)
                 }
 
                 else -> {
@@ -178,13 +120,11 @@ class KklLuarNegeriActivity : AppCompatActivity() {
             else -> ""
         }
         val smtKelas = binding.etSmtkelas.text.toString()
-        val kotaBerangkat = binding.etKotakeberangkatan.text.toString()
-        val kotaPulang = binding.etKotakepulangan.text.toString()
         val email = binding.etEmail.text.toString()
 
         // Cek apakah semua field form sudah diisi
         if (nama.isEmpty() || nim.isEmpty() || noHp.isEmpty() || jenisKelamin.isEmpty() ||
-            smtKelas.isEmpty() || kotaBerangkat.isEmpty() || kotaPulang.isEmpty() || email.isEmpty()
+            smtKelas.isEmpty()  || email.isEmpty()
         ) {
             Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show()
             return
@@ -196,14 +136,13 @@ class KklLuarNegeriActivity : AppCompatActivity() {
 
     private fun uploadAllImages() {
         // Cek apakah semua gambar sudah dipilih
-        if (ktpImageUri == null || fotoImageUri == null || pasporImageUri == null) {
+        if (ktpImageUri == null || fotoImageUri == null) {
             Toast.makeText(this, "All images must be selected", Toast.LENGTH_SHORT).show()
             return
         }
         val imageUris = mapOf(
             ScanType.KTP to ktpImageUri,
             ScanType.FOTO to fotoImageUri,
-            ScanType.PASPOR to pasporImageUri
         )
 
         // Kirim gambar ke ViewModel untuk di-upload
@@ -220,12 +159,10 @@ class KklLuarNegeriActivity : AppCompatActivity() {
             else -> ""
         }
         val smtKelas = binding.etSmtkelas.text.toString()
-        val kotaBerangkat = binding.etKotakeberangkatan.text.toString()
-        val kotaPulang = binding.etKotakepulangan.text.toString()
         val email = binding.etEmail.text.toString()
 
         if (nama.isEmpty() || nim.isEmpty() || noHp.isEmpty() || jenisKelamin.isEmpty() ||
-            smtKelas.isEmpty() || kotaBerangkat.isEmpty() || kotaPulang.isEmpty() || email.isEmpty()
+            smtKelas.isEmpty()  || email.isEmpty()
         ) {
             Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show()
             return
@@ -237,8 +174,6 @@ class KklLuarNegeriActivity : AppCompatActivity() {
             "noHp" to noHp,
             "jenisKelamin" to jenisKelamin,
             "smtKelas" to smtKelas,
-            "kotaBerangkat" to kotaBerangkat,
-            "kotaPulang" to kotaPulang,
             "email" to email,
             "ktpUrl" to imageUrls[ScanType.KTP],
             "fotoUrl" to imageUrls[ScanType.FOTO],
@@ -393,7 +328,7 @@ class KklLuarNegeriActivity : AppCompatActivity() {
         val icon: ImageView = dialogView.findViewById(R.id.iv_icon)
 
         saveButton.text= getString(R.string.lihat)
-        batalButton.visibility=View.GONE
+        batalButton.visibility= View.GONE
         title.text= getString(R.string.selamat_data_anda_berhasil_tersimpan_admin_akan_segera_menghubungi_anda_silahkan_klik_untuk_melihat_data_anda)
         icon.setImageResource(R.drawable.ic_smile)
 
@@ -406,11 +341,6 @@ class KklLuarNegeriActivity : AppCompatActivity() {
 
     companion object {
         private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
-        private const val COLLECTION_PATH = "daftar_KKLluarnegeri"
+        private const val COLLECTION_PATH = "daftar_KKLdalamnegeri"
     }
-}
-
-
-enum class ScanType {
-    KTP, FOTO, PASPOR
 }

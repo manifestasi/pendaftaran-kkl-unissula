@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.manifestasi.mykklunissula.databinding.ActivityMainBinding
 import com.manifestasi.mykklunissula.presentation.auth.AuthViewModel
 import com.manifestasi.mykklunissula.presentation.auth.LoginActivity
+import com.manifestasi.mykklunissula.presentation.pendaftarankkl.KklDalamNegeriActivity
+import com.manifestasi.mykklunissula.presentation.pendaftarankkl.KklLuarNegeriActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,11 +40,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnLn.setOnClickListener {
-            /* menuju form pendaftaran kkl luar negeri */
+            startActivity(Intent(this,KklLuarNegeriActivity::class.java))
         }
 
         binding.btnDn.setOnClickListener {
-            /* menuju form pendaftaran kkl dalam negeri */
+            startActivity(Intent(this,KklDalamNegeriActivity::class.java))
         }
 
         binding.btnPendaftar.setOnClickListener {

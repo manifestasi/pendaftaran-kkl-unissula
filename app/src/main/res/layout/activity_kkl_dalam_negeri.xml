@@ -3,11 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    tools:context=".presentation.pendaftarankkl.KklLuarNegeriActivity">
-
+    tools:context=".presentation.pendaftarankkl.KklDalamNegeriActivity">
     <LinearLayout
         android:id="@+id/ln_topbar"
         android:layout_width="match_parent"
@@ -33,7 +32,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/inter_semibold"
-            android:text="@string/kklluarnegeri"
+            android:text="@string/kkldalamnegeri"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_kklluar"
+                android:src="@drawable/img_kkldalamnegeri"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -217,42 +216,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/ln_jeniskelamin" />
 
                     <EditText
-                        android:id="@+id/et_kotakeberangkatan"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_edittext_login"
-                        android:fontFamily="@font/inter_regular"
-                        android:hint="@string/kotaberangkat"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:paddingStart="10dp"
-                        android:textColor="@color/textcolor"
-                        android:textColorHint="@color/hint"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/et_smtkelas" />
-
-                    <EditText
-                        android:id="@+id/et_kotakepulangan"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_edittext_login"
-                        android:fontFamily="@font/inter_regular"
-                        android:hint="@string/kotapulang"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:paddingStart="10dp"
-                        android:textColor="@color/textcolor"
-                        android:textColorHint="@color/hint"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/et_kotakeberangkatan" />
-
-                    <EditText
                         android:id="@+id/et_email"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
@@ -268,7 +231,7 @@
                         android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/et_kotakepulangan" />
+                        app:layout_constraintTop_toBottomOf="@+id/et_smtkelas" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -426,7 +389,8 @@
                     app:cardBackgroundColor="@color/green"
                     app:cardCornerRadius="16dp"
                     app:layout_constraintBottom_toBottomOf="@id/btn_scanktp"
-                    app:layout_constraintEnd_toStartOf="@id/btn_scanpaspor"
+
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/btn_scanktp"
                     app:layout_constraintTop_toTopOf="@id/btn_scanktp">
 
@@ -450,46 +414,6 @@
                             android:layout_gravity="center_horizontal"
                             android:fontFamily="@font/inter_semibold"
                             android:text="@string/scanfoto"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/btn_scanpaspor"
-                    style="@style/Widget.Material3.CardView.Elevated"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    app:cardBackgroundColor="@color/green"
-                    app:cardCornerRadius="16dp"
-                    app:layout_constraintBottom_toBottomOf="@id/btn_scanfoto"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/btn_scanfoto"
-                    app:layout_constraintTop_toTopOf="@id/btn_scanfoto">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="10dp"
-                        app:layout_constraintStart_toStartOf="parent">
-
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center_horizontal"
-                            android:src="@drawable/ic_upload" />
-
-                        <TextView
-                            android:id="@+id/tv_scanpaspor"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:fontFamily="@font/inter_semibold"
-                            android:text="@string/scanpas"
                             android:textAlignment="center"
                             android:textColor="@color/white"
                             android:textSize="12sp"
@@ -532,6 +456,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

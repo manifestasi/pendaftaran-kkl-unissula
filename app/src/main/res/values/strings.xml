@@ -10,6 +10,11 @@
     <string name="text_register">Belum punya akun?</string>
     <string name="konfirmasi_password_anda">Konfirmasi password anda</string>
     <string name="register">Register</string>
+    <string name="text_home_kkl">KULIAH KERJA LAPANGAN MAGISTER KENOTARIATAN FAKULTAS HUKUM UNISSULA SEMARANG</string>
+    <string name="text_card_1">KULIAH KERJA LAPANGAN LUAR NEGERI</string>
+    <string name="daftar">DAFTAR</string>
+    <string name="text_card_2">KULIAH KERJA LAPANGAN DALAM NEGERI</string>
+    <string name="text_card_3">DATA MAHASISWA YANG SUDAH TERDAFTAR</string>
     <string name="kklluarnegeri">Pendaftaran KKL Luar Negeri</string>
     <string name="Isidata">Isi Data Dibawah ini!</string>
     <string name="nama">Nama Lengkap</string>
@@ -29,4 +34,10 @@
     <string name="simpan">Simpan</string>
     <string name="kotaberangkat">Kota keberangkatan</string>
     <string name="kotapulang">Kota kepulangan</string>
+    <string name="andayakin">Anda yakin untuk menyimpan\ndata ?</string>
+    <string name="yakin">Yakin</string>
+    <string name="batal">Batalkan</string>
+    <string name="selamat_data_anda_berhasil_tersimpan_admin_akan_segera_menghubungi_anda_silahkan_klik_untuk_melihat_data_anda">Selamat Data Anda berhasil tersimpan, Admin Akan Segera Menghubungi Anda\nSilahkan Klik Untuk Melihat Data anda</string>
+    <string name="lihat">Lihat</string>
+    <string name="kkldalamnegeri">Pendaftaran KKL Dalam Negeri</string>
 </resources>
