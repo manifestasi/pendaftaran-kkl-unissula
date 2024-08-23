@@ -64,6 +64,10 @@ class PendaftarActivity : AppCompatActivity() {
             }
 
         })
+
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
     }
 
     private fun setUpData(){
@@ -114,7 +118,7 @@ class PendaftarActivity : AppCompatActivity() {
         }
 
         if(listM.isEmpty()){
-            Toast.makeText(this, "Not found", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this, "Not found", Toast.LENGTH_SHORT).show()
         } else {
             listPendaftarAdapter.submitList(listM)
         }
