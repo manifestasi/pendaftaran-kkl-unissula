@@ -26,6 +26,37 @@ class EditKKLViewModel @Inject constructor(
     private val _dataResult = MutableLiveData<Resource<Map<String, Any>>>()
     val dataResult: LiveData<Resource<Map<String, Any>>> = _dataResult
 
+    // Variabel untuk menyimpan sementara URI gambar yang dipilih
+    private var selectedImages: MutableMap<ScanType, Uri?> = mutableMapOf()
+
+    fun setSelectedImage(scanType: ScanType, imageUri: Uri?) {
+        selectedImages[scanType] = imageUri
+    }
+
+    private val _deleteResult = MutableLiveData<Resource<Unit>>()
+    val deleteResult: LiveData<Resource<Unit>> = _deleteResult
+
+    fun uploadMultipleImages(imageUris: Map<ScanType, Uri?>, previousUrls: Map<ScanType, String?>): LiveData<Resource<Map<ScanType, String>>> {
+        val result = MutableLiveData<Resource<Map<ScanType, String>>>()
+        viewModelScope.launch {
+            result.value = Resource.Loading
+            val resultMap = mutableMapOf<ScanType, String>()
+
+            try {
+                imageUris.forEach { (scanType, uri) ->
+                    uri?.let {
+                        val imageUrl = repository.updateImage(scanType, it, previousUrls[scanType])
+                        resultMap[scanType] = imageUrl
+                    }
+                }
+                result.value = Resource.Success(resultMap)
+            } catch (e: Exception) {
+                result.value = Resource.Error(e)
+            }
+        }
+        return result
+    }
+
     fun getDataFromFirestore() {
         viewModelScope.launch {
             _dataResult.value = Resource.Loading
@@ -37,12 +68,11 @@ class EditKKLViewModel @Inject constructor(
             }
         }
     }
-
-    fun updateDataInFirestore(userId: String, data: Map<String, Any>) {
+    fun updateDataInFirestore( collection: String,data: MutableMap<String, Any>) {
         viewModelScope.launch {
             _saveResult.value = Resource.Loading
             try {
-                repository.updateDataInFirestore(userId, data)
+                repository.updateDataInFirestore(collection,data)
                 _saveResult.value = Resource.Success(null)
             } catch (e: Exception) {
                 _saveResult.value = Resource.Error(e)
@@ -61,4 +91,30 @@ class EditKKLViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteDataFromFirestore(collection: String) {
+        viewModelScope.launch {
+            _deleteResult.value = Resource.Loading
+            try {
+                repository.deleteDataFromFirestore(collection)
+                _deleteResult.value = Resource.Success(null)
+            } catch (e: Exception) {
+                _deleteResult.value = Resource.Error(e)
+            }
+        }
+    }
+
+    fun deleteImage() {
+        viewModelScope.launch {
+            _deleteResult.value = Resource.Loading
+            try {
+                repository.deleteAllImages()
+                _deleteResult.value = Resource.Success(null)
+            } catch (e: Exception) {
+                _deleteResult.value = Resource.Error(e)
+            }
+        }
+    }
+
+
 }

@@ -1,6 +1,8 @@
 package com.manifestasi.mykklunissula.data.repository
 
 import android.net.Uri
+import android.util.Log
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -26,20 +28,22 @@ class FormkklRepository @Inject constructor(
 
     suspend fun saveDataToFirestore(data: Map<String, String?>,collection:String) {
         withContext(Dispatchers.IO) {
-            firebaseFirestore.collection(collection).add(data).await()
+            val uid = firebaseAuth.currentUser?.uid ?: throw IllegalStateException("User not logged in")
+            firebaseFirestore.collection(collection).document(uid).set(data).await()
         }
     }
 
     suspend fun getDataFromFirestore(): Map<String, Any>? {
         return withContext(Dispatchers.IO) {
             val uid = firebaseAuth.currentUser?.uid ?: throw IllegalStateException("User not logged in")
-            firebaseFirestore.collection("daftar_KKLluarnegeri").document("AsoSfJdBYBlZ0JwduYfJ").get().await().data
+            firebaseFirestore.collection("daftar_KKLluarnegeri").document(uid).get().await().data
         }
     }
 
-    suspend fun updateDataInFirestore(userId: String, data: Map<String, Any>) {
+    suspend fun updateDataInFirestore(collection: String, data: MutableMap<String, Any>) {
         withContext(Dispatchers.IO) {
-            firebaseFirestore.collection("users").document(userId).update(data).await()
+            val uid = firebaseAuth.currentUser?.uid ?: throw IllegalStateException("User not logged in")
+            firebaseFirestore.collection(collection).document(uid).update(data).await()
         }
     }
 
@@ -51,11 +55,41 @@ class FormkklRepository @Inject constructor(
             }
 
             // Upload new image
-            val ref = firebaseStorage.reference.child("images/${scanType.name.lowercase()}_${System.currentTimeMillis()}.jpg")
+            val uid = firebaseAuth.currentUser?.uid ?: throw IllegalStateException("User not logged in")
+            val ref = firebaseStorage.reference.child("images/$uid/${scanType.name.lowercase()}_${System.currentTimeMillis()}.jpg")
             ref.putFile(imageUri).await()
             ref.downloadUrl.await().toString()
         }
     }
+
+    suspend fun deleteDataFromFirestore(collection: String) {
+        withContext(Dispatchers.IO) {
+            val uid = firebaseAuth.currentUser?.uid ?: throw IllegalStateException("User not logged in")
+            firebaseFirestore.collection(collection).document(uid).delete().await()
+        }
+    }
+
+    suspend fun deleteAllImages() {
+        withContext(Dispatchers.IO) {
+            val uid = firebaseAuth.currentUser?.uid ?: throw IllegalStateException("User not logged in")
+            val storageRef = firebaseStorage.reference.child("images/$uid")
+
+            // Ambil daftar semua gambar di folder
+            val listResult = storageRef.listAll().await()
+
+            // Hapus gambar satu per satu
+            for (file in listResult.items) {
+                try {
+                    file.delete().await()
+                } catch (e: Exception) {
+                    // Tangani jika terjadi error pada penghapusan file tertentu
+                    Log.e("FormkklRepository", "Failed to delete file: ${file.path}", e)
+                }
+            }
+        }
+    }
+
+
 
 
 

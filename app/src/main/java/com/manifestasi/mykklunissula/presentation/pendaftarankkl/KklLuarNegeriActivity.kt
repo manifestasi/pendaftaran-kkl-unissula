@@ -125,19 +125,7 @@ class KklLuarNegeriActivity : AppCompatActivity() {
         }
     }
 
-    private fun startCameraX() {
-        val intent = Intent(this, CameraActivity::class.java)
-        launcherIntentCameraX.launch(intent)
-    }
 
-    private val launcherIntentCameraX = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode == CAMERAX_RESULT) {
-            currentImageUri = it.data?.getStringExtra(CameraActivity.EXTRA_CAMERAX_IMAGE)?.toUri()
-            showImage()
-        }
-    }
 
     private fun showImage() {
         currentImageUri?.let {
@@ -200,6 +188,9 @@ class KklLuarNegeriActivity : AppCompatActivity() {
             Toast.makeText(this, "All images must be selected", Toast.LENGTH_SHORT).show()
             return
         }
+        Log.d("UploadAllImages", "KTP URI: $ktpImageUri")
+        Log.d("UploadAllImages", "Foto URI: $fotoImageUri")
+        Log.d("UploadAllImages", "Paspor URI: $pasporImageUri")
         val imageUris = mapOf(
             ScanType.KTP to ktpImageUri,
             ScanType.FOTO to fotoImageUri,
@@ -211,6 +202,8 @@ class KklLuarNegeriActivity : AppCompatActivity() {
     }
 
     private fun saveFormData(imageUrls: Map<ScanType, String>) {
+        Log.d("ImageURLs", "KTP: ${imageUrls[ScanType.KTP]}, Foto: ${imageUrls[ScanType.FOTO]}, Paspor: ${imageUrls[ScanType.PASPOR]}")
+
         val nama = binding.etNama.text.toString()
         val nim = binding.etNim.text.toString()
         val noHp = binding.etNohp.text.toString()
@@ -330,7 +323,8 @@ class KklLuarNegeriActivity : AppCompatActivity() {
                 Bitmap.createScaledBitmap(originalBitmap, targetWidth, targetHeight, false)
 
             // Simpan bitmap hasil resize ke file sementara
-            val file = File(cacheDir, "resized_image.jpg")
+            val uniqueFileName = "resized_image_${System.currentTimeMillis()}.jpg"
+            val file = File(cacheDir, uniqueFileName)
             val outputStream = FileOutputStream(file)
             resizedBitmap.compress(
                 Bitmap.CompressFormat.JPEG,
@@ -407,6 +401,20 @@ class KklLuarNegeriActivity : AppCompatActivity() {
     companion object {
         private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
         private const val COLLECTION_PATH = "daftar_KKLluarnegeri"
+    }
+
+    private fun startCameraX() {
+        val intent = Intent(this, CameraActivity::class.java)
+        launcherIntentCameraX.launch(intent)
+    }
+
+    private val launcherIntentCameraX = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == CAMERAX_RESULT) {
+            currentImageUri = it.data?.getStringExtra(CameraActivity.EXTRA_CAMERAX_IMAGE)?.toUri()
+            showImage()
+        }
     }
 }
 
