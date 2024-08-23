@@ -40,4 +40,10 @@
     <string name="selamat_data_anda_berhasil_tersimpan_admin_akan_segera_menghubungi_anda_silahkan_klik_untuk_melihat_data_anda">Selamat Data Anda berhasil tersimpan, Admin Akan Segera Menghubungi Anda\nSilahkan Klik Untuk Melihat Data anda</string>
     <string name="lihat">Lihat</string>
     <string name="kkldalamnegeri">Pendaftaran KKL Dalam Negeri</string>
+    <string name="dataanda">Data Anda</string>
+    <string name="dataterdaftar">Data Terdaftar</string>
+    <string name="smtkela">Semester dan Kelas</string>
+    <string name="datadokumen">Data Dokumen</string>
+    <string name="hapus">Hapus</string>
+    <string name="update">Update</string>
 </resources>

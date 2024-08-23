@@ -23,6 +23,7 @@
             android:src="@drawable/img_logo" />
 
         <androidx.appcompat.widget.SearchView
+            android:id="@+id/sv_search"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="40dp"
@@ -30,7 +31,17 @@
             android:paddingBottom="8dp"
             android:background="@drawable/rectangle_3"/>
 
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="18dp"
+            android:indeterminateTint="@color/green"
+            android:layout_gravity="center"/>
+
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_pendaftar"
+            android:visibility="gone"
             android:paddingHorizontal="4dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -11,6 +12,7 @@
         android:gravity="center_vertical"
         android:layout_height="50dp">
         <TextView
+            android:id="@+id/tv_name"
             android:textColor="@color/white"
             android:layout_marginStart="30dp"
             android:layout_width="wrap_content"
@@ -18,4 +20,4 @@
             tools:text="Hello wold"
             android:textSize="20dp"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
-</LinearLayout>
+</RelativeLayout>
