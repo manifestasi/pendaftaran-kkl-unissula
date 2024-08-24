@@ -29,6 +29,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.manifestasi.mykklunissula.BuildConfig
+import com.manifestasi.mykklunissula.MainActivity
 import com.manifestasi.mykklunissula.util.CameraActivity
 import com.manifestasi.mykklunissula.util.CameraActivity.Companion.CAMERAX_RESULT
 import com.manifestasi.mykklunissula.util.Resource
@@ -45,6 +46,7 @@ class KklLuarNegeriActivity : AppCompatActivity() {
     private var ktpImageUri: Uri? = null
     private var fotoImageUri: Uri? = null
     private var pasporImageUri: Uri? = null
+    private var buktiImageUri: Uri? = null
     private var scanType: ScanType? = null
 
     private val requestPermissionLauncher =
@@ -91,6 +93,10 @@ class KklLuarNegeriActivity : AppCompatActivity() {
             scanType = ScanType.PASPOR
             startGallery()
         }
+        binding.btnScanbukti.setOnClickListener {
+            scanType = ScanType.BUKTI
+            startGallery()
+        }
 
         binding.btnBack.setOnClickListener {
             onBackPressed()
@@ -126,7 +132,6 @@ class KklLuarNegeriActivity : AppCompatActivity() {
     }
 
 
-
     private fun showImage() {
         currentImageUri?.let {
             when (scanType) {
@@ -146,6 +151,12 @@ class KklLuarNegeriActivity : AppCompatActivity() {
                     pasporImageUri = it
                     binding.rlPaspor.visibility = View.VISIBLE
                     binding.ivPlaceholderPaspor.setImageURI(it)
+                }
+
+                ScanType.BUKTI -> {
+                    buktiImageUri = it
+                    binding.rlBukti.visibility = View.VISIBLE
+                    binding.ivPlaceholderBukti.setImageURI(it)
                 }
 
                 else -> {
@@ -184,25 +195,22 @@ class KklLuarNegeriActivity : AppCompatActivity() {
 
     private fun uploadAllImages() {
         // Cek apakah semua gambar sudah dipilih
-        if (ktpImageUri == null || fotoImageUri == null || pasporImageUri == null) {
+        if (ktpImageUri == null || fotoImageUri == null || pasporImageUri == null || buktiImageUri == null) {
             Toast.makeText(this, "All images must be selected", Toast.LENGTH_SHORT).show()
             return
         }
-        Log.d("UploadAllImages", "KTP URI: $ktpImageUri")
-        Log.d("UploadAllImages", "Foto URI: $fotoImageUri")
-        Log.d("UploadAllImages", "Paspor URI: $pasporImageUri")
         val imageUris = mapOf(
             ScanType.KTP to ktpImageUri,
             ScanType.FOTO to fotoImageUri,
-            ScanType.PASPOR to pasporImageUri
+            ScanType.PASPOR to pasporImageUri,
+            ScanType.BUKTI to buktiImageUri
         )
 
         // Kirim gambar ke ViewModel untuk di-upload
-        viewmodel.uploadMultipleImages(COLLECTION_PATH,imageUris)
+        viewmodel.uploadMultipleImages(COLLECTION_PATH, imageUris)
     }
 
     private fun saveFormData(imageUrls: Map<ScanType, String>) {
-        Log.d("ImageURLs", "KTP: ${imageUrls[ScanType.KTP]}, Foto: ${imageUrls[ScanType.FOTO]}, Paspor: ${imageUrls[ScanType.PASPOR]}")
 
         val nama = binding.etNama.text.toString()
         val nim = binding.etNim.text.toString()
@@ -235,10 +243,11 @@ class KklLuarNegeriActivity : AppCompatActivity() {
             "email" to email,
             "ktpUrl" to imageUrls[ScanType.KTP],
             "fotoUrl" to imageUrls[ScanType.FOTO],
-            "pasporUrl" to imageUrls[ScanType.PASPOR]
+            "pasporUrl" to imageUrls[ScanType.PASPOR],
+            "buktiUrl" to imageUrls[ScanType.BUKTI]
         )
 
-        viewmodel.saveDataToFirestore(data,COLLECTION_PATH)
+        viewmodel.saveDataToFirestore(data, COLLECTION_PATH)
     }
 
     private fun observeImage() {
@@ -386,13 +395,16 @@ class KklLuarNegeriActivity : AppCompatActivity() {
         val title: TextView = dialogView.findViewById(R.id.tv_title)
         val icon: ImageView = dialogView.findViewById(R.id.iv_icon)
 
-        saveButton.text= getString(R.string.lihat)
-        batalButton.visibility=View.GONE
-        title.text= getString(R.string.selamat)
+        saveButton.text = getString(R.string.lihat)
+        batalButton.visibility = View.GONE
+        title.text = getString(R.string.selamat)
         icon.setImageResource(R.drawable.ic_smile)
 
         saveButton.setOnClickListener {
             dialog.dismiss()
+            clearData()
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
         dialog.show()
 
@@ -416,9 +428,32 @@ class KklLuarNegeriActivity : AppCompatActivity() {
             showImage()
         }
     }
+
+    private fun clearData(){
+        binding.etNama.setText("")
+        binding.etNim.setText("")
+        binding.etNohp.setText("")
+        binding.etSmtkelas.setText("")
+        binding.etEmail.setText("")
+        binding.etNama.setText("")
+        binding.etKotakeberangkatan.setText("")
+        binding.etKotakepulangan.setText("")
+
+        binding.radioGroup.clearCheck()
+
+        binding.ivPlaceholder.setImageDrawable(null)
+        binding.ivPlaceholderFoto.setImageDrawable(null)
+        binding.ivPlaceholderPaspor.setImageDrawable(null)
+        binding.ivPlaceholderBukti.setImageDrawable(null)
+
+        binding.rlKtp.visibility=View.GONE
+        binding.rlFoto.visibility=View.GONE
+        binding.rlPaspor.visibility=View.GONE
+        binding.rlBukti.visibility=View.GONE
+    }
 }
 
 
 enum class ScanType {
-    KTP, FOTO, PASPOR
+    KTP, FOTO, PASPOR, BUKTI
 }

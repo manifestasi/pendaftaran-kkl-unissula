@@ -37,6 +37,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/inter_semibold"
                 android:text="@string/welcome_to"
+                android:textColor="@color/textcolor2"
                 android:textSize="40sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -50,6 +51,7 @@
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/text_home_kkl"
                 android:textAlignment="center"
+                android:textColor="@color/textcolor2"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -83,6 +85,7 @@
                     android:textSize="16sp"
                     android:fontFamily="@font/inter_bold"
                     android:textAlignment="center"
+                    android:textColor="@color/textcolor2"
                     android:layout_height="wrap_content"
                     android:text="@string/text_card_1"/>
                 
@@ -116,6 +119,7 @@
                     android:textSize="16sp"
                     android:fontFamily="@font/inter_bold"
                     android:textAlignment="center"
+                    android:textColor="@color/textcolor2"
                     android:layout_height="wrap_content"
                     android:text="@string/text_card_2"/>
 
@@ -149,6 +153,7 @@
                     android:textSize="16sp"
                     android:fontFamily="@font/inter_bold"
                     android:textAlignment="center"
+                    android:textColor="@color/textcolor2"
                     android:layout_height="wrap_content"
                     android:text="@string/text_card_3"/>
 
@@ -159,7 +164,7 @@
                     android:layout_marginTop="15dp"
                     android:drawableStart="@drawable/baseline_arrow_forward_24"
                     android:paddingHorizontal="29dp"
-                    android:text="@string/daftar"
+                    android:text="@string/lihat"
                     android:textSize="16sp"
                     android:textColor="@color/white"
                     android:background="@drawable/btn_rectangle1"/>
@@ -183,6 +188,7 @@
                     android:textSize="16sp"
                     android:fontFamily="@font/inter_bold"
                     android:textAlignment="center"
+                    android:textColor="@color/textcolor2"
                     android:layout_height="wrap_content"
                     android:text="@string/textprofile"/>
 

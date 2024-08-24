@@ -1,5 +1,6 @@
 package com.manifestasi.mykklunissula.presentation.profile
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -24,6 +25,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.manifestasi.mykklunissula.BuildConfig
 import com.manifestasi.mykklunissula.R
 import com.manifestasi.mykklunissula.databinding.ActivityEditKklluarNegeriBinding
+import com.manifestasi.mykklunissula.presentation.pendaftarankkl.KklLuarNegeriActivity
 import com.manifestasi.mykklunissula.presentation.pendaftarankkl.ScanType
 import com.manifestasi.mykklunissula.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,9 +41,11 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
     private var ktpImageUri: Uri? = null
     private var fotoImageUri: Uri? = null
     private var pasporImageUri: Uri? = null
+    private var buktiImageUri: Uri? = null
     private var previousKtpUrl: String? = null
     private var previousFotoUrl: String? = null
     private var previousPasporUrl: String? = null
+    private var previousBuktiUrl: String? = null
     private var scanType: ScanType? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +69,10 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
             scanType = ScanType.PASPOR
             startGallery()
         }
+        binding.rlBukti.setOnClickListener {
+            scanType = ScanType.BUKTI
+            startGallery()
+        }
         binding.toolbar.btnBack.setOnClickListener {
             onBackPressed()
         }
@@ -72,7 +80,9 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
         binding.btnSimpan.setOnClickListener { showConfirmDialog() }
         binding.btnHapus.setOnClickListener { showConfirmDialogDelete() }
 
-        binding.toolbar.tvTitlePage.text= getString(R.string.data_kkl_luar_negeri)
+        binding.toolbar.tvTitlePage.text = getString(R.string.data_kkl_luar_negeri)
+
+        binding.layout.visibility=View.INVISIBLE
         loadData()
     }
 
@@ -104,49 +114,70 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
         viewmodel.dataResult.observe(this) { resource ->
             when (resource) {
                 is Resource.Loading -> {
+                    showLoading2(true)
                     Toast.makeText(this, "Loading data...", Toast.LENGTH_SHORT).show()
                 }
 
                 is Resource.Success -> {
+                    showLoading2(false)
                     val data = resource.data
-                    binding.etNama.setText(data?.get("nama") as String)
-                    binding.etNim.setText(data["nim"] as String)
-                    binding.etNohp.setText(data["noHp"] as String)
-                    val jenisKelamin = data["jenisKelamin"] as String
-                    when (jenisKelamin) {
-                        "Laki-Laki" -> binding.radioGroup.check(R.id.radio_button_1)
-                        "Perempuan" -> binding.radioGroup.check(R.id.radio_button_2)
-                    }
-                    binding.etSmtkelas.setText(data["smtKelas"] as String)
-                    binding.etKotakeberangkatan.setText(data["kotaBerangkat"] as String)
-                    binding.etKotakepulangan.setText(data["kotaPulang"] as String)
-                    binding.etEmail.setText(data["email"] as String)
-                    val ktpUrl = data["ktpUrl"] as? String
-                    val fotoUrl = data["fotoUrl"] as? String
-                    val pasporUrl = data["pasporUrl"] as? String
+                    if (data.isNullOrEmpty()) {
+                        // Menampilkan tampilan kosong jika tidak ada data
+                        binding.empty.root.visibility = View.VISIBLE
+                        binding.empty.tvTitle.text = getString(R.string.emptyluar)
+                        binding.empty.btnDaftar.setOnClickListener {
+                            startActivity(Intent(this, KklLuarNegeriActivity::class.java))
+                            finish()
+                        }
+                    } else {
+                        binding.layout.visibility=View.VISIBLE
+                        binding.etNama.setText(data["nama"] as String)
+                        binding.etNim.setText(data["nim"] as String)
+                        binding.etNohp.setText(data["noHp"] as String)
+                        val jenisKelamin = data["jenisKelamin"] as String
+                        when (jenisKelamin) {
+                            "Laki-Laki" -> binding.radioGroup.check(R.id.radio_button_1)
+                            "Perempuan" -> binding.radioGroup.check(R.id.radio_button_2)
+                        }
+                        binding.etSmtkelas.setText(data["smtKelas"] as String)
+                        binding.etKotakeberangkatan.setText(data["kotaBerangkat"] as String)
+                        binding.etKotakepulangan.setText(data["kotaPulang"] as String)
+                        binding.etEmail.setText(data["email"] as String)
+                        val ktpUrl = data["ktpUrl"] as? String
+                        val fotoUrl = data["fotoUrl"] as? String
+                        val pasporUrl = data["pasporUrl"] as? String
+                        val buktiUrl = data["buktiUrl"] as? String
 
-                    previousKtpUrl = ktpUrl
-                    previousFotoUrl = fotoUrl
-                    previousPasporUrl = pasporUrl
+                        previousKtpUrl = ktpUrl
+                        previousFotoUrl = fotoUrl
+                        previousPasporUrl = pasporUrl
+                        previousBuktiUrl = buktiUrl
 
-                    ktpUrl?.let {
-                        Glide.with(this)
-                            .load(it)
-                            .into(binding.ivPlaceholder)
-                    }
-                    fotoUrl?.let {
-                        Glide.with(this)
-                            .load(it)
-                            .into(binding.ivPlaceholderFoto)
-                    }
-                    pasporUrl?.let {
-                        Glide.with(this)
-                            .load(it)
-                            .into(binding.ivPlaceholderPaspor)
+                        ktpUrl?.let {
+                            Glide.with(this)
+                                .load(it)
+                                .into(binding.ivPlaceholder)
+                        }
+                        fotoUrl?.let {
+                            Glide.with(this)
+                                .load(it)
+                                .into(binding.ivPlaceholderFoto)
+                        }
+                        pasporUrl?.let {
+                            Glide.with(this)
+                                .load(it)
+                                .into(binding.ivPlaceholderPaspor)
+                        }
+                        buktiUrl?.let {
+                            Glide.with(this)
+                                .load(it)
+                                .into(binding.ivPlaceholderBukti)
+                        }
                     }
                 }
 
                 is Resource.Error -> {
+                    showLoading2(false)
                     Toast.makeText(
                         this,
                         "Failed to load data: ${resource.exception.message}",
@@ -178,6 +209,11 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
                     pasporImageUri = it
                     binding.rlPaspor.visibility = View.VISIBLE
                     binding.ivPlaceholderPaspor.setImageURI(it)
+                }
+                ScanType.BUKTI -> {
+                    buktiImageUri = it
+                    binding.rlBukti.visibility = View.VISIBLE
+                    binding.ivPlaceholderBukti.setImageURI(it)
                 }
 
                 else -> {
@@ -229,6 +265,9 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
         binding.progressindicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
+    private fun showLoading2(isLoading: Boolean) {
+        binding.progressindicator2.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
     private fun showConfirmDialog() {
 
         val dialogView: View =
@@ -455,6 +494,16 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
                     )
                     updatedImageUrls[ScanType.PASPOR] = newPasporUrl
                 }
+                // Update gambar Bukti jika ada
+                buktiImageUri?.let {
+                    val newBuktiUrl = viewmodel.updateImage(
+                        COLLECTION_PATH,
+                        ScanType.BUKTI,
+                        it,
+                        previousBuktiUrl
+                    )
+                    updatedImageUrls[ScanType.BUKTI] = newBuktiUrl
+                }
 
                 // Setelah semua gambar diupload, persiapkan data untuk diupdate ke Firestore
                 val data = mutableMapOf<String, Any>(
@@ -476,6 +525,7 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
                 updatedImageUrls[ScanType.KTP]?.let { data["ktpUrl"] = it }
                 updatedImageUrls[ScanType.FOTO]?.let { data["fotoUrl"] = it }
                 updatedImageUrls[ScanType.PASPOR]?.let { data["pasporUrl"] = it }
+                updatedImageUrls[ScanType.BUKTI]?.let { data["buktiUrl"] = it }
 
                 // Update data di Firestore
                 viewmodel.updateDataInFirestore(COLLECTION_PATH, data)

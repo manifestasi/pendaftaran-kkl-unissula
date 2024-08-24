@@ -20,6 +20,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp">
@@ -334,6 +335,32 @@
                     </com.google.android.material.card.MaterialCardView>
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/rl_bukti"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:background="@drawable/bg_dash_image"
+                    android:padding="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rl_foto">
+
+                    <com.google.android.material.card.MaterialCardView
+                        style="@style/Widget.Material3.CardView.Filled"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:cardBackgroundColor="#00F5F8FA"
+                        app:cardCornerRadius="20dp">
+
+                        <ImageView
+                            android:id="@+id/iv_placeholder_bukti"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="center"
+                            />
+                    </com.google.android.material.card.MaterialCardView>
+                </RelativeLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_simpan"
@@ -348,7 +375,7 @@
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rl_foto" />
+                    app:layout_constraintTop_toBottomOf="@+id/rl_bukti" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_hapus"
@@ -384,4 +411,28 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressindicator2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        app:indicatorColor="@color/green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+         />
+
+    <include
+        android:visibility="gone"
+        android:layout_marginTop="55dp"
+        android:id="@+id/empty"
+        layout="@layout/empty_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

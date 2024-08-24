@@ -14,7 +14,7 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding=ActivityProfileBinding.inflate(layoutInflater)
+        binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -23,18 +23,26 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         binding.cvKklluar.setOnClickListener {
-            startActivity(Intent(this,EditKKLLuarNegeriActivity::class.java))
+            startActivity(Intent(this, EditKKLLuarNegeriActivity::class.java))
         }
 
         binding.cvKklldalam.setOnClickListener {
-            startActivity(Intent(this,EditKKLDalamNegeriActivity::class.java))
+            startActivity(Intent(this, EditKKLDalamNegeriActivity::class.java))
+        }
+
+        binding.btnNext.setOnClickListener {
+            startActivity(Intent(this, EditKKLLuarNegeriActivity::class.java))
+        }
+
+        binding.btnNext2.setOnClickListener {
+            startActivity(Intent(this, EditKKLDalamNegeriActivity::class.java))
         }
 
         binding.toolbar.btnBack.setOnClickListener {
             onBackPressed()
         }
 
-        binding.toolbar.tvTitlePage.text= getString(R.string.profile)
+        binding.toolbar.tvTitlePage.text = getString(R.string.profile)
 
     }
 }

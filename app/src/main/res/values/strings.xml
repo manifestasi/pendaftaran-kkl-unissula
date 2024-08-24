@@ -55,4 +55,7 @@
     <string name="data_kkl_luar_negeri">Data KKL Luar Negeri</string>
     <string name="profile">Profile</string>
     <string name="textprofile">DATA PROFILE</string>
+    <string name="scanbukti">Bukti Pembayaran</string>
+    <string name="emptyluar">Anda belum melakukan pendaftaran untuk\nKKL Luar Negeri</string>
+    <string name="emptydalam">Anda belum melakukan pendaftaran untuk\nKKL Dalam Negeri</string>
 </resources>

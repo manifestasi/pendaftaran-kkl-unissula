@@ -1,6 +1,7 @@
 package com.manifestasi.mykklunissula.presentation.pendaftarankkl
 
-import android.Manifest
+
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -21,6 +22,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.manifestasi.mykklunissula.BuildConfig
+import com.manifestasi.mykklunissula.MainActivity
 import com.manifestasi.mykklunissula.R
 import com.manifestasi.mykklunissula.databinding.ActivityKklDalamNegeriBinding
 import com.manifestasi.mykklunissula.util.Resource
@@ -35,6 +37,7 @@ class KklDalamNegeriActivity : AppCompatActivity() {
     private var currentImageUri: Uri? = null
     private var ktpImageUri: Uri? = null
     private var fotoImageUri: Uri? = null
+    private var buktiImageUri: Uri? = null
     private var scanType: ScanType? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +55,10 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         }
         binding.btnScanfoto.setOnClickListener {
             scanType = ScanType.FOTO
+            startGallery()
+        }
+        binding.btnScanbukti.setOnClickListener {
+            scanType = ScanType.BUKTI
             startGallery()
         }
 
@@ -102,6 +109,12 @@ class KklDalamNegeriActivity : AppCompatActivity() {
                     binding.ivPlaceholderFoto.setImageURI(it)
                 }
 
+                ScanType.BUKTI -> {
+                    buktiImageUri = it
+                    binding.rlBukti.visibility = View.VISIBLE
+                    binding.ivPlaceholderBukti.setImageURI(it)
+                }
+
                 else -> {
                     Log.e("MainActivity", "Unknown scan type")
                 }
@@ -124,7 +137,7 @@ class KklDalamNegeriActivity : AppCompatActivity() {
 
         // Cek apakah semua field form sudah diisi
         if (nama.isEmpty() || nim.isEmpty() || noHp.isEmpty() || jenisKelamin.isEmpty() ||
-            smtKelas.isEmpty()  || email.isEmpty()
+            smtKelas.isEmpty() || email.isEmpty()
         ) {
             Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show()
             return
@@ -136,17 +149,18 @@ class KklDalamNegeriActivity : AppCompatActivity() {
 
     private fun uploadAllImages() {
         // Cek apakah semua gambar sudah dipilih
-        if (ktpImageUri == null || fotoImageUri == null) {
+        if (ktpImageUri == null || fotoImageUri == null|| buktiImageUri == null) {
             Toast.makeText(this, "All images must be selected", Toast.LENGTH_SHORT).show()
             return
         }
         val imageUris = mapOf(
             ScanType.KTP to ktpImageUri,
             ScanType.FOTO to fotoImageUri,
+            ScanType.BUKTI to buktiImageUri
         )
 
         // Kirim gambar ke ViewModel untuk di-upload
-        viewmodel.uploadMultipleImages(COLLECTION_PATH,imageUris)
+        viewmodel.uploadMultipleImages(COLLECTION_PATH, imageUris)
     }
 
     private fun saveFormData(imageUrls: Map<ScanType, String>) {
@@ -162,7 +176,7 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         val email = binding.etEmail.text.toString()
 
         if (nama.isEmpty() || nim.isEmpty() || noHp.isEmpty() || jenisKelamin.isEmpty() ||
-            smtKelas.isEmpty()  || email.isEmpty()
+            smtKelas.isEmpty() || email.isEmpty()
         ) {
             Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show()
             return
@@ -177,9 +191,10 @@ class KklDalamNegeriActivity : AppCompatActivity() {
             "email" to email,
             "ktpUrl" to imageUrls[ScanType.KTP],
             "fotoUrl" to imageUrls[ScanType.FOTO],
+            "buktiUrl" to imageUrls[ScanType.BUKTI],
         )
 
-        viewmodel.saveDataToFirestore(data,COLLECTION_PATH)
+        viewmodel.saveDataToFirestore(data, COLLECTION_PATH)
     }
 
     private fun observeImage() {
@@ -326,20 +341,40 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         val title: TextView = dialogView.findViewById(R.id.tv_title)
         val icon: ImageView = dialogView.findViewById(R.id.iv_icon)
 
-        saveButton.text= getString(R.string.lihat)
-        batalButton.visibility= View.GONE
-        title.text= getString(R.string.selamat)
+        saveButton.text = getString(R.string.lihat)
+        batalButton.visibility = View.GONE
+        title.text = getString(R.string.selamat)
         icon.setImageResource(R.drawable.ic_smile)
 
         saveButton.setOnClickListener {
             dialog.dismiss()
+            clearData()
+            startActivity(Intent(this,MainActivity::class.java))
+            finish()
         }
         dialog.show()
 
     }
 
+    private fun clearData(){
+        binding.etNama.setText("")
+        binding.etNim.setText("")
+        binding.etNohp.setText("")
+        binding.etSmtkelas.setText("")
+        binding.etEmail.setText("")
+        binding.etNama.setText("")
+
+        binding.radioGroup.clearCheck()
+
+        binding.ivPlaceholder.setImageDrawable(null)
+        binding.ivPlaceholderFoto.setImageDrawable(null)
+        binding.ivPlaceholderBukti.setImageDrawable(null)
+
+        binding.rlKtp.visibility=View.GONE
+        binding.rlFoto.visibility=View.GONE
+        binding.rlBukti.visibility=View.GONE
+    }
     companion object {
-        private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
         private const val COLLECTION_PATH = "daftar_KKLdalamnegeri"
     }
 }

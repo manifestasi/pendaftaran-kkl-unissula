@@ -378,6 +378,34 @@
                     </com.google.android.material.card.MaterialCardView>
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/rl_bukti"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:background="@drawable/bg_dash_image"
+                    android:padding="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rl_paspor">
+
+                    <com.google.android.material.card.MaterialCardView
+                        style="@style/Widget.Material3.CardView.Filled"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:cardBackgroundColor="#00F5F8FA"
+                        app:cardCornerRadius="20dp">
+
+                        <ImageView
+                            android:id="@+id/iv_placeholder_bukti"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="center"
+                            android:src="@drawable/img_kklluar" />
+                    </com.google.android.material.card.MaterialCardView>
+                </RelativeLayout>
+
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btn_scanktp"
                     style="@style/Widget.Material3.CardView.Elevated"
@@ -388,7 +416,7 @@
                     app:cardCornerRadius="16dp"
                     app:layout_constraintEnd_toStartOf="@id/btn_scanfoto"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rl_paspor">
+                    app:layout_constraintTop_toBottomOf="@+id/rl_bukti">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -466,7 +494,7 @@
                     app:cardBackgroundColor="@color/green"
                     app:cardCornerRadius="16dp"
                     app:layout_constraintBottom_toBottomOf="@id/btn_scanfoto"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_scanbukti"
                     app:layout_constraintStart_toEndOf="@id/btn_scanfoto"
                     app:layout_constraintTop_toTopOf="@id/btn_scanfoto">
 
@@ -490,6 +518,47 @@
                             android:layout_gravity="center_horizontal"
                             android:fontFamily="@font/inter_semibold"
                             android:text="@string/scanpas"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btn_scanbukti"
+                    style="@style/Widget.Material3.CardView.Elevated"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    app:cardBackgroundColor="@color/green"
+                    app:cardCornerRadius="16dp"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_scanpaspor"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btn_scanpaspor"
+                    app:layout_constraintTop_toTopOf="@id/btn_scanpaspor">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/ic_upload" />
+
+                        <TextView
+                            android:id="@+id/tv_scanbukti"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="@string/scanbukti"
                             android:textAlignment="center"
                             android:textColor="@color/white"
                             android:textSize="12sp"
