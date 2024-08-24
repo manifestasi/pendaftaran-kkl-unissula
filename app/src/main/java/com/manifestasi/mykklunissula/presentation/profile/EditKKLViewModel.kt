@@ -10,13 +10,15 @@ import com.manifestasi.mykklunissula.data.repository.FormkklRepository
 import com.manifestasi.mykklunissula.presentation.pendaftarankkl.ScanType
 import com.manifestasi.mykklunissula.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class EditKKLViewModel @Inject constructor(
     private val repository: FormkklRepository
-) :ViewModel(){
+) : ViewModel() {
     private val _uploadResult = MutableLiveData<Resource<Map<ScanType, String>>>()
     val uploadResult: LiveData<Resource<Map<ScanType, String>>> = _uploadResult
 
@@ -36,43 +38,26 @@ class EditKKLViewModel @Inject constructor(
     private val _deleteResult = MutableLiveData<Resource<Unit>>()
     val deleteResult: LiveData<Resource<Unit>> = _deleteResult
 
-    fun uploadMultipleImages(imageUris: Map<ScanType, Uri?>, previousUrls: Map<ScanType, String?>): LiveData<Resource<Map<ScanType, String>>> {
-        val result = MutableLiveData<Resource<Map<ScanType, String>>>()
-        viewModelScope.launch {
-            result.value = Resource.Loading
-            val resultMap = mutableMapOf<ScanType, String>()
+    private val _deleteResultimage = MutableLiveData<Resource<Unit>>()
+    val deleteResultimage: LiveData<Resource<Unit>> = _deleteResultimage
 
-            try {
-                imageUris.forEach { (scanType, uri) ->
-                    uri?.let {
-                        val imageUrl = repository.updateImage(scanType, it, previousUrls[scanType])
-                        resultMap[scanType] = imageUrl
-                    }
-                }
-                result.value = Resource.Success(resultMap)
-            } catch (e: Exception) {
-                result.value = Resource.Error(e)
-            }
-        }
-        return result
-    }
-
-    fun getDataFromFirestore() {
+    fun getDataFromFirestore(collection: String) {
         viewModelScope.launch {
             _dataResult.value = Resource.Loading
             try {
-                val data = repository.getDataFromFirestore()
+                val data = repository.getDataFromFirestore(collection)
                 _dataResult.value = Resource.Success(data ?: emptyMap())
             } catch (e: Exception) {
                 _dataResult.value = Resource.Error(e)
             }
         }
     }
-    fun updateDataInFirestore( collection: String,data: MutableMap<String, Any>) {
+
+    fun updateDataInFirestore(collection: String, data: MutableMap<String, Any>) {
         viewModelScope.launch {
             _saveResult.value = Resource.Loading
             try {
-                repository.updateDataInFirestore(collection,data)
+                repository.updateDataInFirestore(collection, data)
                 _saveResult.value = Resource.Success(null)
             } catch (e: Exception) {
                 _saveResult.value = Resource.Error(e)
@@ -80,15 +65,9 @@ class EditKKLViewModel @Inject constructor(
         }
     }
 
-    fun updateImage(scanType: ScanType, imageUri: Uri, previousUrl: String?) {
-        viewModelScope.launch {
-            _uploadResult.value = Resource.Loading
-            try {
-                val imageUrl = repository.updateImage(scanType, imageUri, previousUrl)
-                _uploadResult.value = Resource.Success(mapOf(scanType to imageUrl))
-            } catch (e: Exception) {
-                _uploadResult.value = Resource.Error(e)
-            }
+    suspend fun updateImage(collection: String,scanType: ScanType, imageUri: Uri, previousUrl: String?): String? {
+        return withContext(Dispatchers.IO) {
+            repository.updateImage(collection,scanType, imageUri, previousUrl)
         }
     }
 
@@ -104,14 +83,14 @@ class EditKKLViewModel @Inject constructor(
         }
     }
 
-    fun deleteImage() {
+    fun deleteImage(collection: String) {
         viewModelScope.launch {
-            _deleteResult.value = Resource.Loading
+            _deleteResultimage.value = Resource.Loading
             try {
-                repository.deleteAllImages()
-                _deleteResult.value = Resource.Success(null)
+                repository.deleteAllImages(collection)
+                _deleteResultimage.value = Resource.Success(null)
             } catch (e: Exception) {
-                _deleteResult.value = Resource.Error(e)
+                _deleteResultimage.value = Resource.Error(e)
             }
         }
     }

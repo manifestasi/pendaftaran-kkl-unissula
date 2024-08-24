@@ -146,7 +146,7 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         )
 
         // Kirim gambar ke ViewModel untuk di-upload
-        viewmodel.uploadMultipleImages(imageUris)
+        viewmodel.uploadMultipleImages(COLLECTION_PATH,imageUris)
     }
 
     private fun saveFormData(imageUrls: Map<ScanType, String>) {
@@ -177,7 +177,6 @@ class KklDalamNegeriActivity : AppCompatActivity() {
             "email" to email,
             "ktpUrl" to imageUrls[ScanType.KTP],
             "fotoUrl" to imageUrls[ScanType.FOTO],
-            "pasporUrl" to imageUrls[ScanType.PASPOR]
         )
 
         viewmodel.saveDataToFirestore(data,COLLECTION_PATH)
@@ -264,8 +263,8 @@ class KklDalamNegeriActivity : AppCompatActivity() {
             val resizedBitmap =
                 Bitmap.createScaledBitmap(originalBitmap, targetWidth, targetHeight, false)
 
-            // Simpan bitmap hasil resize ke file sementara
-            val file = File(cacheDir, "resized_image.jpg")
+            val uniqueFileName = "resized_image_${System.currentTimeMillis()}.jpg"
+            val file = File(cacheDir, uniqueFileName)
             val outputStream = FileOutputStream(file)
             resizedBitmap.compress(
                 Bitmap.CompressFormat.JPEG,
@@ -329,7 +328,7 @@ class KklDalamNegeriActivity : AppCompatActivity() {
 
         saveButton.text= getString(R.string.lihat)
         batalButton.visibility= View.GONE
-        title.text= getString(R.string.selamat_data_anda_berhasil_tersimpan_admin_akan_segera_menghubungi_anda_silahkan_klik_untuk_melihat_data_anda)
+        title.text= getString(R.string.selamat)
         icon.setImageResource(R.drawable.ic_smile)
 
         saveButton.setOnClickListener {

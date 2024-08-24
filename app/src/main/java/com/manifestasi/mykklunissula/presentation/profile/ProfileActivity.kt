@@ -25,5 +25,16 @@ class ProfileActivity : AppCompatActivity() {
         binding.cvKklluar.setOnClickListener {
             startActivity(Intent(this,EditKKLLuarNegeriActivity::class.java))
         }
+
+        binding.cvKklldalam.setOnClickListener {
+            startActivity(Intent(this,EditKKLDalamNegeriActivity::class.java))
+        }
+
+        binding.toolbar.btnBack.setOnClickListener {
+            onBackPressed()
+        }
+
+        binding.toolbar.tvTitlePage.text= getString(R.string.profile)
+
     }
 }

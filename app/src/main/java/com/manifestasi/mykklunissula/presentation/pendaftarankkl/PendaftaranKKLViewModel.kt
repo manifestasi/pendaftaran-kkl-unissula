@@ -22,7 +22,7 @@ class PendaftaranKKLViewModel @Inject constructor(
     private val _saveResult = MediatorLiveData<Resource<Void>>()
     val saveResult: LiveData<Resource<Void>> = _saveResult
 
-    fun uploadMultipleImages(imageUris: Map<ScanType, Uri?>) {
+    fun uploadMultipleImages(collection: String,imageUris: Map<ScanType, Uri?>) {
         viewModelScope.launch {
             _uploadResult.value = Resource.Loading
             val resultMap = mutableMapOf<ScanType, String>()
@@ -30,7 +30,7 @@ class PendaftaranKKLViewModel @Inject constructor(
             try {
                 imageUris.forEach { (scanType, uri) ->
                     uri?.let {
-                        val imageUrl = formkklRepository.uploadImage(scanType, it)
+                        val imageUrl = formkklRepository.uploadImage(collection,scanType, it)
                         resultMap[scanType] = imageUrl
                     }
                 }

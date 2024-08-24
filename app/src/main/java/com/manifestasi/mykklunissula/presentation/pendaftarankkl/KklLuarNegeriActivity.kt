@@ -198,7 +198,7 @@ class KklLuarNegeriActivity : AppCompatActivity() {
         )
 
         // Kirim gambar ke ViewModel untuk di-upload
-        viewmodel.uploadMultipleImages(imageUris)
+        viewmodel.uploadMultipleImages(COLLECTION_PATH,imageUris)
     }
 
     private fun saveFormData(imageUrls: Map<ScanType, String>) {
@@ -388,7 +388,7 @@ class KklLuarNegeriActivity : AppCompatActivity() {
 
         saveButton.text= getString(R.string.lihat)
         batalButton.visibility=View.GONE
-        title.text= getString(R.string.selamat_data_anda_berhasil_tersimpan_admin_akan_segera_menghubungi_anda_silahkan_klik_untuk_melihat_data_anda)
+        title.text= getString(R.string.selamat)
         icon.setImageResource(R.drawable.ic_smile)
 
         saveButton.setOnClickListener {

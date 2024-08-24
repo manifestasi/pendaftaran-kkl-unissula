@@ -17,10 +17,10 @@ class FormkklRepository @Inject constructor(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseAuth: FirebaseAuth
 ) {
-    suspend fun uploadImage(scanType: ScanType, imageUri: Uri): String {
+    suspend fun uploadImage(collection: String,scanType: ScanType, imageUri: Uri): String {
         return withContext(Dispatchers.IO) {
             val uid = firebaseAuth.currentUser?.uid ?: throw IllegalStateException("User not logged in")
-            val ref = firebaseStorage.reference.child("images/$uid/${scanType.name.lowercase()}_${System.currentTimeMillis()}.jpg")
+            val ref = firebaseStorage.reference.child("images/$collection/$uid/${scanType.name.lowercase()}_${System.currentTimeMillis()}.jpg")
             ref.putFile(imageUri).await()
             ref.downloadUrl.await().toString()
         }
@@ -33,10 +33,10 @@ class FormkklRepository @Inject constructor(
         }
     }
 
-    suspend fun getDataFromFirestore(): Map<String, Any>? {
+    suspend fun getDataFromFirestore(collection: String): Map<String, Any>? {
         return withContext(Dispatchers.IO) {
             val uid = firebaseAuth.currentUser?.uid ?: throw IllegalStateException("User not logged in")
-            firebaseFirestore.collection("daftar_KKLluarnegeri").document(uid).get().await().data
+            firebaseFirestore.collection(collection).document(uid).get().await().data
         }
     }
 
@@ -47,7 +47,7 @@ class FormkklRepository @Inject constructor(
         }
     }
 
-    suspend fun updateImage(scanType: ScanType, imageUri: Uri, previousUrl: String?): String {
+    suspend fun updateImage(collection: String,scanType: ScanType, imageUri: Uri, previousUrl: String?): String {
         return withContext(Dispatchers.IO) {
             // Delete previous image if exists
             previousUrl?.let {
@@ -56,7 +56,7 @@ class FormkklRepository @Inject constructor(
 
             // Upload new image
             val uid = firebaseAuth.currentUser?.uid ?: throw IllegalStateException("User not logged in")
-            val ref = firebaseStorage.reference.child("images/$uid/${scanType.name.lowercase()}_${System.currentTimeMillis()}.jpg")
+            val ref = firebaseStorage.reference.child("images/$collection/$uid/${scanType.name.lowercase()}_${System.currentTimeMillis()}.jpg")
             ref.putFile(imageUri).await()
             ref.downloadUrl.await().toString()
         }
@@ -69,22 +69,14 @@ class FormkklRepository @Inject constructor(
         }
     }
 
-    suspend fun deleteAllImages() {
+    suspend fun deleteAllImages(collection: String) {
         withContext(Dispatchers.IO) {
             val uid = firebaseAuth.currentUser?.uid ?: throw IllegalStateException("User not logged in")
-            val storageRef = firebaseStorage.reference.child("images/$uid")
+            val imagesRef = firebaseStorage.reference.child("images/$collection/$uid/")
+            val result = imagesRef.listAll().await()
 
-            // Ambil daftar semua gambar di folder
-            val listResult = storageRef.listAll().await()
-
-            // Hapus gambar satu per satu
-            for (file in listResult.items) {
-                try {
-                    file.delete().await()
-                } catch (e: Exception) {
-                    // Tangani jika terjadi error pada penghapusan file tertentu
-                    Log.e("FormkklRepository", "Failed to delete file: ${file.path}", e)
-                }
+            result.items.forEach { fileRef ->
+                fileRef.delete().await()
             }
         }
     }

@@ -23,7 +23,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.manifestasi.mykklunissula.BuildConfig
 import com.manifestasi.mykklunissula.R
-import com.manifestasi.mykklunissula.databinding.ActivityEditKklluarNegeriBinding
+import com.manifestasi.mykklunissula.databinding.ActivityEditKkldalamNegeriBinding
 import com.manifestasi.mykklunissula.presentation.pendaftarankkl.ScanType
 import com.manifestasi.mykklunissula.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,8 +32,8 @@ import java.io.File
 import java.io.FileOutputStream
 
 @AndroidEntryPoint
-class EditKKLLuarNegeriActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityEditKklluarNegeriBinding
+class EditKKLDalamNegeriActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityEditKkldalamNegeriBinding
     private val viewmodel: EditKKLViewModel by viewModels()
     private var currentImageUri: Uri? = null
     private var ktpImageUri: Uri? = null
@@ -46,7 +46,7 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityEditKklluarNegeriBinding.inflate(layoutInflater)
+        binding = ActivityEditKkldalamNegeriBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -61,10 +61,7 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
             scanType = ScanType.FOTO
             startGallery()
         }
-        binding.rlPaspor.setOnClickListener {
-            scanType = ScanType.PASPOR
-            startGallery()
-        }
+
         binding.toolbar.btnBack.setOnClickListener {
             onBackPressed()
         }
@@ -72,10 +69,10 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
         binding.btnSimpan.setOnClickListener { showConfirmDialog() }
         binding.btnHapus.setOnClickListener { showConfirmDialogDelete() }
 
-        binding.toolbar.tvTitlePage.text= getString(R.string.data_kkl_luar_negeri)
+        binding.toolbar.tvTitlePage.text= getString(R.string.data_kkl_dalam_negeri)
         loadData()
-    }
 
+    }
 
     private fun startGallery() {
         launcherGallery.launch("image/*")
@@ -118,8 +115,6 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
                         "Perempuan" -> binding.radioGroup.check(R.id.radio_button_2)
                     }
                     binding.etSmtkelas.setText(data["smtKelas"] as String)
-                    binding.etKotakeberangkatan.setText(data["kotaBerangkat"] as String)
-                    binding.etKotakepulangan.setText(data["kotaPulang"] as String)
                     binding.etEmail.setText(data["email"] as String)
                     val ktpUrl = data["ktpUrl"] as? String
                     val fotoUrl = data["fotoUrl"] as? String
@@ -138,11 +133,6 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
                         Glide.with(this)
                             .load(it)
                             .into(binding.ivPlaceholderFoto)
-                    }
-                    pasporUrl?.let {
-                        Glide.with(this)
-                            .load(it)
-                            .into(binding.ivPlaceholderPaspor)
                     }
                 }
 
@@ -174,11 +164,6 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
                     binding.ivPlaceholderFoto.setImageURI(it)
                 }
 
-                ScanType.PASPOR -> {
-                    pasporImageUri = it
-                    binding.rlPaspor.visibility = View.VISIBLE
-                    binding.ivPlaceholderPaspor.setImageURI(it)
-                }
 
                 else -> {
                     Log.e("MainActivity", "Unknown scan type")
@@ -269,7 +254,7 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
         val batalButton: Button = dialogView.findViewById(R.id.btn_batal)
         val text: TextView = dialogView.findViewById(R.id.tv_title)
 
-        text.text = getString(R.string.hapusdata)
+        text.text= getString(R.string.hapusdata)
         saveButton.text = getString(R.string.hapus)
         saveButton.setOnClickListener {
             deleteImage()
@@ -406,13 +391,11 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
             else -> ""
         }
         val smtKelas = binding.etSmtkelas.text.toString()
-        val kotaBerangkat = binding.etKotakeberangkatan.text.toString()
-        val kotaPulang = binding.etKotakepulangan.text.toString()
         val email = binding.etEmail.text.toString()
 
         // Cek apakah semua field form sudah diisi
         if (nama.isEmpty() || nim.isEmpty() || noHp.isEmpty() || jenisKelamin.isEmpty() ||
-            smtKelas.isEmpty() || kotaBerangkat.isEmpty() || kotaPulang.isEmpty() || email.isEmpty()
+            smtKelas.isEmpty() || email.isEmpty()
         ) {
             Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show()
             return
@@ -433,26 +416,19 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
 
                 // Update gambar KTP jika ada
                 ktpImageUri?.let {
-                    val newKtpUrl =
-                        viewmodel.updateImage(COLLECTION_PATH, ScanType.KTP, it, previousKtpUrl)
+                    val newKtpUrl = viewmodel.updateImage(COLLECTION_PATH,ScanType.KTP, it, previousKtpUrl)
                     updatedImageUrls[ScanType.KTP] = newKtpUrl
                 }
 
                 // Update gambar Foto jika ada
                 fotoImageUri?.let {
-                    val newFotoUrl =
-                        viewmodel.updateImage(COLLECTION_PATH, ScanType.FOTO, it, previousFotoUrl)
+                    val newFotoUrl = viewmodel.updateImage(COLLECTION_PATH,ScanType.FOTO, it, previousFotoUrl)
                     updatedImageUrls[ScanType.FOTO] = newFotoUrl
                 }
 
                 // Update gambar Paspor jika ada
                 pasporImageUri?.let {
-                    val newPasporUrl = viewmodel.updateImage(
-                        COLLECTION_PATH,
-                        ScanType.PASPOR,
-                        it,
-                        previousPasporUrl
-                    )
+                    val newPasporUrl = viewmodel.updateImage(COLLECTION_PATH,ScanType.PASPOR, it, previousPasporUrl)
                     updatedImageUrls[ScanType.PASPOR] = newPasporUrl
                 }
 
@@ -467,8 +443,6 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
                         else -> ""
                     },
                     "smtKelas" to binding.etSmtkelas.text.toString(),
-                    "kotaBerangkat" to binding.etKotakeberangkatan.text.toString(),
-                    "kotaPulang" to binding.etKotakepulangan.text.toString(),
                     "email" to binding.etEmail.text.toString()
                 )
 
@@ -481,47 +455,35 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
                 viewmodel.updateDataInFirestore(COLLECTION_PATH, data)
 
                 // Observasi hasil update
-                viewmodel.saveResult.observe(this@EditKKLLuarNegeriActivity) { resource ->
+                viewmodel.saveResult.observe(this@EditKKLDalamNegeriActivity) { resource ->
                     when (resource) {
                         is Resource.Loading -> {
                             showLoading(true)
                         }
-
                         is Resource.Success -> {
                             showLoading(false)
                             showSuccessDialog()
-                            Toast.makeText(
-                                this@EditKKLLuarNegeriActivity,
-                                "Data updated successfully",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(this@EditKKLDalamNegeriActivity, "Data updated successfully", Toast.LENGTH_SHORT).show()
                         }
-
                         is Resource.Error -> {
                             showLoading(false)
                             Toast.makeText(
-                                this@EditKKLLuarNegeriActivity,
+                                this@EditKKLDalamNegeriActivity,
                                 "Failed to update data: ${resource.exception.message}",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-
                         else -> {}
                     }
                 }
             } catch (e: Exception) {
                 showLoading(false)
-                Toast.makeText(
-                    this@EditKKLLuarNegeriActivity,
-                    "Failed to update data: ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this@EditKKLDalamNegeriActivity, "Failed to update data: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     companion object {
-        private const val COLLECTION_PATH = "daftar_KKLluarnegeri"
+        private const val COLLECTION_PATH = "daftar_KKLdalamnegeri"
     }
-
 }

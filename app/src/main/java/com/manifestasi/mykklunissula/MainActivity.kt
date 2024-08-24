@@ -15,6 +15,7 @@ import com.manifestasi.mykklunissula.presentation.pendaftarankkl.KklDalamNegeriA
 import com.manifestasi.mykklunissula.presentation.pendaftarankkl.KklLuarNegeriActivity
 import com.manifestasi.mykklunissula.presentation.pendaftarkkl.PendaftarActivity
 import com.manifestasi.mykklunissula.presentation.profile.EditKKLLuarNegeriActivity
+import com.manifestasi.mykklunissula.presentation.profile.ProfileActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,6 +55,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this,PendaftarActivity::class.java))
         }
 
+        binding.btnProfile.setOnClickListener {
+            startActivity(Intent(this,ProfileActivity::class.java))
+        }
         binding.btnLogout.setOnClickListener {
             authViewModel.logoutUser().observe(this@MainActivity){ result ->
                 if (result){
