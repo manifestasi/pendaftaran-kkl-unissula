@@ -29,7 +29,9 @@ class RegisterActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         initViewModel()
+
         setAction()
     }
 
@@ -41,19 +43,26 @@ class RegisterActivity : AppCompatActivity() {
                 val password: String = etPass.text.toString()
                 val confirmPassword: String = etConfirmPass.text.toString()
 
+                //proses register
                 authViewModel.registerUser(nim, password, confirmPassword)
                 authViewModel.registerResult.observe(this@RegisterActivity){ result ->
                     when (result){
+
+                        //register ketika sedang login
                         is Resource.Loading -> {
                             btnRegister.isEnabled = false
                             btnRegister.text = "Loading..."
                         }
+
+                        //register ketika berhasil
                         is Resource.Success -> {
                             btnRegister.isEnabled = true
                             Toast.makeText(this@RegisterActivity, "Register berhasil", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this@RegisterActivity, MainActivity::class.java)
                             startActivity(intent)
                         }
+
+                        //register ketika gagal
                         is Resource.ErrorMessage -> {
                             btnRegister.isEnabled = true
                             Toast.makeText(this@RegisterActivity, result.message, Toast.LENGTH_LONG).show()
@@ -69,6 +78,7 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    //inisialisasi authviemodel untuk memanggil fungsi register
     private fun initViewModel(){
         authViewModel = ViewModelProvider(this)[AuthViewModel::class]
     }

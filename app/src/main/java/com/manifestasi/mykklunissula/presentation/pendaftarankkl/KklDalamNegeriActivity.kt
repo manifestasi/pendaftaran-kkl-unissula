@@ -1,7 +1,6 @@
 package com.manifestasi.mykklunissula.presentation.pendaftarankkl
 
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -22,7 +21,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.manifestasi.mykklunissula.BuildConfig
-import com.manifestasi.mykklunissula.MainActivity
 import com.manifestasi.mykklunissula.R
 import com.manifestasi.mykklunissula.databinding.ActivityKklDalamNegeriBinding
 import com.manifestasi.mykklunissula.util.Resource
@@ -73,10 +71,12 @@ class KklDalamNegeriActivity : AppCompatActivity() {
 
     }
 
+    //fungsi untuk membuka gallery
     private fun startGallery() {
         launcherGallery.launch("image/*")
     }
 
+    //fungsi untuk menerima hasil dari gallery
     private val launcherGallery = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -94,6 +94,7 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         }
     }
 
+    //fungsi untuk menampilkan gambar yang sudah dipilih dari gallery
     private fun showImage() {
         currentImageUri?.let {
             when (scanType) {
@@ -122,6 +123,7 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         }
     }
 
+    //fungsi untuk validasi data apakah ada yang belum di isi atau tidak
     private fun validateFormAndUpload() {
         // Validasi form
         val nama = binding.etNama.text.toString()
@@ -147,9 +149,10 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         uploadAllImages()
     }
 
+    //fungsi untuk mengupload gambar ke server
     private fun uploadAllImages() {
         // Cek apakah semua gambar sudah dipilih
-        if (ktpImageUri == null || fotoImageUri == null|| buktiImageUri == null) {
+        if (ktpImageUri == null || fotoImageUri == null || buktiImageUri == null) {
             Toast.makeText(this, "All images must be selected", Toast.LENGTH_SHORT).show()
             return
         }
@@ -163,6 +166,7 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         viewmodel.uploadMultipleImages(COLLECTION_PATH, imageUris)
     }
 
+    //fungsi untuk menyimpan data yang telah diisi
     private fun saveFormData(imageUrls: Map<ScanType, String>) {
         val nama = binding.etNama.text.toString()
         val nim = binding.etNim.text.toString()
@@ -197,6 +201,7 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         viewmodel.saveDataToFirestore(data, COLLECTION_PATH)
     }
 
+    //fungsi untuk mengamati ketika terjadi perubahan gambar
     private fun observeImage() {
         // Observasi hasil upload gambar
         viewmodel.uploadResult.observe(this) { resource ->
@@ -231,6 +236,7 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         }
     }
 
+    //fungsi untuk mengamati ketika terjadi perubahan data
     private fun observeData() {
         // Observasi hasil simpan data ke Firestore
         viewmodel.saveResult.observe(this) { resource ->
@@ -263,6 +269,7 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         }
     }
 
+    //fungsi untuk mengurangi dimensi gambar
     private fun resizeImage(uri: Uri): Uri? {
         try {
             // Dapatkan input stream dari URI gambar yang dipilih
@@ -300,10 +307,12 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         }
     }
 
+    //fungsi untuk menampilkan loading
     private fun showLoading(isLoading: Boolean) {
         binding.progressindicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
+    //fungsi untuk menampilkan konfirmasi dialog
     private fun showConfirmDialog() {
 
         val dialogView: View =
@@ -327,6 +336,7 @@ class KklDalamNegeriActivity : AppCompatActivity() {
 
     }
 
+    //fungsi untuk menampilkan informasi dialog ketika berhasil
     private fun showSuccessDialog() {
 
         val dialogView: View =
@@ -349,14 +359,14 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
             dialog.dismiss()
             clearData()
-            startActivity(Intent(this,MainActivity::class.java))
             finish()
         }
         dialog.show()
 
     }
 
-    private fun clearData(){
+    //fungsi untuk membersihkan data yang di isi
+    private fun clearData() {
         binding.etNama.setText("")
         binding.etNim.setText("")
         binding.etNohp.setText("")
@@ -370,10 +380,11 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         binding.ivPlaceholderFoto.setImageDrawable(null)
         binding.ivPlaceholderBukti.setImageDrawable(null)
 
-        binding.rlKtp.visibility=View.GONE
-        binding.rlFoto.visibility=View.GONE
-        binding.rlBukti.visibility=View.GONE
+        binding.rlKtp.visibility = View.GONE
+        binding.rlFoto.visibility = View.GONE
+        binding.rlBukti.visibility = View.GONE
     }
+
     companion object {
         private const val COLLECTION_PATH = "daftar_KKLdalamnegeri"
     }

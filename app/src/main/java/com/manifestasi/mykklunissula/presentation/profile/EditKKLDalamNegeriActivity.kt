@@ -26,7 +26,6 @@ import com.manifestasi.mykklunissula.BuildConfig
 import com.manifestasi.mykklunissula.R
 import com.manifestasi.mykklunissula.databinding.ActivityEditKkldalamNegeriBinding
 import com.manifestasi.mykklunissula.presentation.pendaftarankkl.KklDalamNegeriActivity
-import com.manifestasi.mykklunissula.presentation.pendaftarankkl.KklLuarNegeriActivity
 import com.manifestasi.mykklunissula.presentation.pendaftarankkl.ScanType
 import com.manifestasi.mykklunissula.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -79,15 +78,17 @@ class EditKKLDalamNegeriActivity : AppCompatActivity() {
 
         binding.toolbar.tvTitlePage.text = getString(R.string.data_kkl_dalam_negeri)
 
-        binding.layout.visibility=View.INVISIBLE
+        binding.layout.visibility = View.INVISIBLE
         loadData()
 
     }
 
+    //fungsi untuk membuka gallery
     private fun startGallery() {
         launcherGallery.launch("image/*")
     }
 
+    //fungsi untuk menerima hasil dari gallery
     private val launcherGallery = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -105,6 +106,7 @@ class EditKKLDalamNegeriActivity : AppCompatActivity() {
         }
     }
 
+    //fungsi untuk load data pengguna
     private fun loadData() {
         viewmodel.getDataFromFirestore(COLLECTION_PATH)
 
@@ -126,7 +128,7 @@ class EditKKLDalamNegeriActivity : AppCompatActivity() {
                             finish()
                         }
                     } else {
-                        binding.layout.visibility=View.VISIBLE
+                        binding.layout.visibility = View.VISIBLE
                         binding.etNama.setText(data["nama"] as String)
                         binding.etNim.setText(data["nim"] as String)
                         binding.etNohp.setText(data["noHp"] as String)
@@ -162,6 +164,7 @@ class EditKKLDalamNegeriActivity : AppCompatActivity() {
                         }
                     }
                 }
+
                 is Resource.Error -> {
                     showLoading2(false)
                     Toast.makeText(
@@ -176,6 +179,7 @@ class EditKKLDalamNegeriActivity : AppCompatActivity() {
         }
     }
 
+    //fungsi untuk menampilkan gambar yang sudah dipilih dari gallery
     private fun showImage() {
         currentImageUri?.let {
             when (scanType) {
@@ -205,6 +209,7 @@ class EditKKLDalamNegeriActivity : AppCompatActivity() {
         }
     }
 
+    //fungsi untuk mengurangi dimensi gambar
     private fun resizeImage(uri: Uri): Uri? {
         try {
             // Dapatkan input stream dari URI gambar yang dipilih
@@ -243,14 +248,17 @@ class EditKKLDalamNegeriActivity : AppCompatActivity() {
         }
     }
 
+    //fungsi untuk menampilkan loading data di awal
     private fun showLoading(isLoading: Boolean) {
         binding.progressindicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
+    //fungsi untuk menampilkan loading ketika update dan hapus
     private fun showLoading2(isLoading: Boolean) {
         binding.progressindicator2.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
+    //fungsi untuk menampilkan konfirmasi dialog update
     private fun showConfirmDialog() {
 
         val dialogView: View =
@@ -278,6 +286,7 @@ class EditKKLDalamNegeriActivity : AppCompatActivity() {
 
     }
 
+    //fungsi untuk menampilkan konfirmasi dialog hapus
     private fun showConfirmDialogDelete() {
 
         val dialogView: View =
@@ -306,6 +315,7 @@ class EditKKLDalamNegeriActivity : AppCompatActivity() {
 
     }
 
+    //fungsi untuk menampilkan informasi dialog ketika berhasil update
     private fun showSuccessDialog() {
 
         val dialogView: View =
@@ -332,6 +342,7 @@ class EditKKLDalamNegeriActivity : AppCompatActivity() {
 
     }
 
+    //fungsi untuk menampilkan informasi dialog ketika berhasil hapus
     private fun showSuccessDialogDelete() {
 
         val dialogView: View =
@@ -359,6 +370,7 @@ class EditKKLDalamNegeriActivity : AppCompatActivity() {
 
     }
 
+    //fungsi untuk menghapus data
     private fun deleteData() {
         viewmodel.deleteDataFromFirestore(COLLECTION_PATH)
 
@@ -389,6 +401,7 @@ class EditKKLDalamNegeriActivity : AppCompatActivity() {
         }
     }
 
+    //fungsi untuk menghapus gambar
     private fun deleteImage() {
         viewmodel.deleteImage(COLLECTION_PATH)
 
@@ -417,6 +430,7 @@ class EditKKLDalamNegeriActivity : AppCompatActivity() {
         }
     }
 
+    //fungsi untuk validasi data apakah ada yang belum di isi atau tidak
     private fun validateFormAndUpload() {
         // Validasi form
         val nama = binding.etNama.text.toString()
@@ -441,6 +455,7 @@ class EditKKLDalamNegeriActivity : AppCompatActivity() {
         updateAllImagesAndData()
     }
 
+    //fungsi untuk update data
     private fun updateAllImagesAndData() {
         // Tampilkan loading
         showLoading(true)

@@ -28,11 +28,14 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        //inisialisasi authviewmodel untuk memanggil fungsi login
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+
         binding.btnMasuk.setOnClickListener {
             val nim = binding.etNim.text.toString().trim()
             val pass = binding.etPass.text.toString().trim()
 
+            //cek isi nim dan password
             if (nim.isNotEmpty() && pass.isNotEmpty()) {
                 authViewModel.loginUser(nim, pass)
             } else {

@@ -38,12 +38,14 @@
                 android:fontFamily="@font/inter_semibold"
                 android:text="@string/welcome_to"
                 android:textSize="40sp"
+                android:textColor="@color/textcolor2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_logo" />
 
             <TextView
                 android:id="@+id/tv_kkl"
+                android:textColor="@color/textcolor2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -62,6 +64,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/inter_semibold"
                 android:text="Register"
+                android:textColor="@color/textcolor2"
                 android:textSize="30sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

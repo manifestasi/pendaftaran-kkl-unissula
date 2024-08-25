@@ -58,4 +58,5 @@
     <string name="scanbukti">Bukti Pembayaran</string>
     <string name="emptyluar">Anda belum melakukan pendaftaran untuk\nKKL Luar Negeri</string>
     <string name="emptydalam">Anda belum melakukan pendaftaran untuk\nKKL Dalam Negeri</string>
+    <string name="logout">Anda yakin ingin keluar?</string>
 </resources>

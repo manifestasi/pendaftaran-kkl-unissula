@@ -2,12 +2,17 @@ package com.manifestasi.mykklunissula
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.manifestasi.mykklunissula.databinding.ActivityMainBinding
 import com.manifestasi.mykklunissula.presentation.auth.AuthViewModel
 import com.manifestasi.mykklunissula.presentation.auth.LoginActivity
@@ -33,6 +38,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        //inisialisasi viewmodel untuk mengambil fungsi ambil pengguna yang sedang login
         authViewModel = ViewModelProvider(this)[(AuthViewModel::class.java)]
 
         if (authViewModel.getCurrentUser() == null) {
@@ -51,7 +57,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnPendaftar.setOnClickListener {
-            /* menuju list pendaftar */
             startActivity(Intent(this,PendaftarActivity::class.java))
         }
 
@@ -59,13 +64,42 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this,ProfileActivity::class.java))
         }
         binding.btnLogout.setOnClickListener {
+            showConfirmDialogLogout()
+        }
+    }
+
+    //fungsi untuk menampilkan konfimasi dialog logout
+    private fun showConfirmDialogLogout() {
+
+        val dialogView: View =
+            LayoutInflater.from(this).inflate(R.layout.valid_dialog, null)
+
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+        val saveButton: Button = dialogView.findViewById(R.id.btn_yakin)
+        val batalButton: Button = dialogView.findViewById(R.id.btn_batal)
+        val text: TextView = dialogView.findViewById(R.id.tv_title)
+
+        text.text = getString(R.string.logout)
+        saveButton.text = getString(R.string.yakin)
+        saveButton.setOnClickListener {
             authViewModel.logoutUser().observe(this@MainActivity){ result ->
                 if (result){
+                    dialog.dismiss()
                     finishAffinity()
                 } else {
                     Toast.makeText(this@MainActivity, "Oops logout gagal", Toast.LENGTH_SHORT).show()
                 }
             }
+
         }
+        batalButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+
     }
 }

@@ -44,6 +44,7 @@ class PendaftarActivity : AppCompatActivity() {
 
     }
 
+    //fungsi untuk proses pencarian pengguna
     private fun setAction(){
         binding.svSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -70,6 +71,7 @@ class PendaftarActivity : AppCompatActivity() {
         }
     }
 
+    //fungsi untuk mengambil data pengguna
     private fun setUpData(){
         pendaftarViewModel.getALlDataPendaftarFromFirestore()
         pendaftarViewModel.resultPendaftar.observe(this){ result ->
@@ -101,6 +103,7 @@ class PendaftarActivity : AppCompatActivity() {
         }
     }
 
+    //fungsi untuk menampilkan daftar pengguna
     private fun showRecycleList(){
         binding.rvPendaftar.layoutManager = LinearLayoutManager(this)
         listPendaftarAdapter = ListPendaftarAdapter()
@@ -108,6 +111,7 @@ class PendaftarActivity : AppCompatActivity() {
         listPendaftarAdapter.submitList(dataPendaftar[PendaftarRepository.TEMP])
     }
 
+    //fungsi untuk melakukan filter data berdasarkan nama pengguna
     private fun filter(newText: String?){
         val listM: ArrayList<DataListPendaftar> = ArrayList()
         val getDataOriginal = dataPendaftar[PendaftarRepository.ORIGINAL]
@@ -124,6 +128,7 @@ class PendaftarActivity : AppCompatActivity() {
         }
     }
 
+    //inisialisasi viewmodel
     private fun initViewModel(){
         pendaftarViewModel = ViewModelProvider(this)[PendaftarViewModel::class]
     }

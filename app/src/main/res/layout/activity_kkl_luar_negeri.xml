@@ -454,7 +454,7 @@
                     app:cardBackgroundColor="@color/green"
                     app:cardCornerRadius="16dp"
                     app:layout_constraintBottom_toBottomOf="@id/btn_scanktp"
-                    app:layout_constraintEnd_toStartOf="@id/btn_scanpaspor"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/btn_scanktp"
                     app:layout_constraintTop_toTopOf="@id/btn_scanktp">
 
@@ -493,10 +493,10 @@
                     android:layout_height="90dp"
                     app:cardBackgroundColor="@color/green"
                     app:cardCornerRadius="16dp"
-                    app:layout_constraintBottom_toBottomOf="@id/btn_scanfoto"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintEnd_toStartOf="@id/btn_scanbukti"
-                    app:layout_constraintStart_toEndOf="@id/btn_scanfoto"
-                    app:layout_constraintTop_toTopOf="@id/btn_scanfoto">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_scanktp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -581,7 +581,7 @@
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_scanktp" />
+                    app:layout_constraintTop_toBottomOf="@+id/btn_scanbukti" />
 
                 <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/progressindicator"

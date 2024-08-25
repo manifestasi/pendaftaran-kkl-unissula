@@ -1,18 +1,9 @@
 package com.manifestasi.mykklunissula.presentation.pendaftarankkl
 
-import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.manifestasi.mykklunissula.R
-import com.manifestasi.mykklunissula.databinding.ActivityKklLuarNegeriBinding
 import android.net.Uri
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,20 +11,18 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import androidx.core.net.toUri
-import androidx.lifecycle.ViewModelProvider
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.manifestasi.mykklunissula.BuildConfig
-import com.manifestasi.mykklunissula.MainActivity
-import com.manifestasi.mykklunissula.util.CameraActivity
-import com.manifestasi.mykklunissula.util.CameraActivity.Companion.CAMERAX_RESULT
+import com.manifestasi.mykklunissula.R
+import com.manifestasi.mykklunissula.databinding.ActivityKklLuarNegeriBinding
 import com.manifestasi.mykklunissula.util.Resource
-import com.manifestasi.mykklunissula.util.getImageUri
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileOutputStream
@@ -49,23 +38,6 @@ class KklLuarNegeriActivity : AppCompatActivity() {
     private var buktiImageUri: Uri? = null
     private var scanType: ScanType? = null
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                Toast.makeText(this, "Permission request granted", Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(this, "Permission request denied", Toast.LENGTH_LONG).show()
-            }
-        }
-
-    private fun allPermissionsGranted() =
-        ContextCompat.checkSelfPermission(
-            this,
-            REQUIRED_PERMISSION
-        ) == PackageManager.PERMISSION_GRANTED
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -77,9 +49,6 @@ class KklLuarNegeriActivity : AppCompatActivity() {
             insets
         }
 
-//        if (!allPermissionsGranted()) {
-//            requestPermissionLauncher.launch(REQUIRED_PERMISSION)
-//        }
 
         binding.btnScanktp.setOnClickListener {
             scanType = ScanType.KTP
@@ -130,7 +99,6 @@ class KklLuarNegeriActivity : AppCompatActivity() {
             Log.d("Photo Picker", "No media selected")
         }
     }
-
 
     private fun showImage() {
         currentImageUri?.let {
@@ -403,7 +371,6 @@ class KklLuarNegeriActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
             dialog.dismiss()
             clearData()
-            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
         dialog.show()
@@ -411,25 +378,10 @@ class KklLuarNegeriActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
         private const val COLLECTION_PATH = "daftar_KKLluarnegeri"
     }
 
-    private fun startCameraX() {
-        val intent = Intent(this, CameraActivity::class.java)
-        launcherIntentCameraX.launch(intent)
-    }
-
-    private val launcherIntentCameraX = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode == CAMERAX_RESULT) {
-            currentImageUri = it.data?.getStringExtra(CameraActivity.EXTRA_CAMERAX_IMAGE)?.toUri()
-            showImage()
-        }
-    }
-
-    private fun clearData(){
+    private fun clearData() {
         binding.etNama.setText("")
         binding.etNim.setText("")
         binding.etNohp.setText("")
@@ -446,10 +398,10 @@ class KklLuarNegeriActivity : AppCompatActivity() {
         binding.ivPlaceholderPaspor.setImageDrawable(null)
         binding.ivPlaceholderBukti.setImageDrawable(null)
 
-        binding.rlKtp.visibility=View.GONE
-        binding.rlFoto.visibility=View.GONE
-        binding.rlPaspor.visibility=View.GONE
-        binding.rlBukti.visibility=View.GONE
+        binding.rlKtp.visibility = View.GONE
+        binding.rlFoto.visibility = View.GONE
+        binding.rlPaspor.visibility = View.GONE
+        binding.rlBukti.visibility = View.GONE
     }
 }
 

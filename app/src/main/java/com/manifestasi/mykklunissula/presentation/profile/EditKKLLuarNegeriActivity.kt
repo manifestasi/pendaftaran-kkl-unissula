@@ -82,7 +82,7 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
 
         binding.toolbar.tvTitlePage.text = getString(R.string.data_kkl_luar_negeri)
 
-        binding.layout.visibility=View.INVISIBLE
+        binding.layout.visibility = View.INVISIBLE
         loadData()
     }
 
@@ -130,7 +130,7 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
                             finish()
                         }
                     } else {
-                        binding.layout.visibility=View.VISIBLE
+                        binding.layout.visibility = View.VISIBLE
                         binding.etNama.setText(data["nama"] as String)
                         binding.etNim.setText(data["nim"] as String)
                         binding.etNohp.setText(data["noHp"] as String)
@@ -210,6 +210,7 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
                     binding.rlPaspor.visibility = View.VISIBLE
                     binding.ivPlaceholderPaspor.setImageURI(it)
                 }
+
                 ScanType.BUKTI -> {
                     buktiImageUri = it
                     binding.rlBukti.visibility = View.VISIBLE
@@ -268,6 +269,7 @@ class EditKKLLuarNegeriActivity : AppCompatActivity() {
     private fun showLoading2(isLoading: Boolean) {
         binding.progressindicator2.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
+
     private fun showConfirmDialog() {
 
         val dialogView: View =
