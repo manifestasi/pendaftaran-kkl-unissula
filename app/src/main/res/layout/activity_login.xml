@@ -11,20 +11,21 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:padding="16dp">
 
             <ImageView
-                android:padding="10dp"
                 android:id="@+id/iv_logo"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:padding="10dp"
                 android:src="@drawable/img_logo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,6 +39,7 @@
                 android:fontFamily="@font/inter_semibold"
                 android:text="@string/welcome_to"
                 android:textSize="40sp"
+                android:textColor="@color/textcolor2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_logo" />
@@ -51,6 +53,7 @@
                 android:text="@string/kkl"
                 android:textAlignment="center"
                 android:textSize="14sp"
+                android:textColor="@color/textcolor2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_welcome" />
@@ -72,6 +75,7 @@
                 android:fontFamily="@font/inter_semibold"
                 android:text="@string/login"
                 android:textSize="30sp"
+                android:textColor="@color/textcolor2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_login" />
@@ -170,24 +174,30 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginTop="8dp"
                     android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="300dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/btn_masuk">
+
                     <TextView
+                        android:textColor="@color/textcolor2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_medium"
-                        android:text="@string/text_register"/>
+                        android:text="@string/text_register" />
+
                     <TextView
                         android:id="@+id/tv_register"
-                        android:layout_marginStart="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/textcolor2"
                         android:fontFamily="@font/inter_bold"
-                        android:text="@string/text_register2"/>
+                        android:text="@string/text_register2" />
                 </LinearLayout>
 
 

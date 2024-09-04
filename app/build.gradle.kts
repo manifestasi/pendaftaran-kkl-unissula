@@ -39,6 +39,7 @@ android {
 
     buildFeatures{
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -79,4 +80,5 @@ dependencies {
     implementation (libs.androidx.camera.view)
     implementation (libs.androidx.camera.extensions)
     implementation(libs.androidx.exifinterface)
+    implementation (libs.guava)
 }

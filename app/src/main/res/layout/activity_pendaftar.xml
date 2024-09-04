@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".presentation.pendaftarkkl.PendaftarActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:id="@+id/iv_logo"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:src="@drawable/img_logo" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/sv_search"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            style="@style/CustomSearchView"
+            android:paddingBottom="8dp"
+            android:background="@drawable/rectangle_3"/>
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="18dp"
+            android:indeterminateTint="@color/green"
+            android:layout_gravity="center"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_pendaftar"
+            android:visibility="gone"
+            android:paddingHorizontal="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="425dp"
+            tools:listitem="@layout/item_list_pendaftar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="vertical">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_back"
+                android:layout_width="83dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="30dp"
+                android:drawableStart="@drawable/ic_back_button"
+                android:background="@drawable/rect_back_button"
+                android:paddingStart="20dp"
+                android:paddingBottom="3dp"
+                android:paddingEnd="20dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
