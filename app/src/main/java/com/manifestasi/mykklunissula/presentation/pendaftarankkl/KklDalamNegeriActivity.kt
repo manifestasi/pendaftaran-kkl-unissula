@@ -179,6 +179,9 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         val smtKelas = binding.etSmtkelas.text.toString()
         val email = binding.etEmail.text.toString()
 
+        /* get uid from user active */
+        val uid = viewmodel.getCurrentUser()?.uid ?: ""
+
         if (nama.isEmpty() || nim.isEmpty() || noHp.isEmpty() || jenisKelamin.isEmpty() ||
             smtKelas.isEmpty() || email.isEmpty()
         ) {
@@ -187,6 +190,7 @@ class KklDalamNegeriActivity : AppCompatActivity() {
         }
 
         val data = mapOf(
+            "id" to uid,
             "nama" to nama,
             "nim" to nim,
             "noHp" to noHp,
@@ -196,6 +200,7 @@ class KklDalamNegeriActivity : AppCompatActivity() {
             "ktpUrl" to imageUrls[ScanType.KTP],
             "fotoUrl" to imageUrls[ScanType.FOTO],
             "buktiUrl" to imageUrls[ScanType.BUKTI],
+            "status" to "1"
         )
 
         viewmodel.saveDataToFirestore(data, COLLECTION_PATH)

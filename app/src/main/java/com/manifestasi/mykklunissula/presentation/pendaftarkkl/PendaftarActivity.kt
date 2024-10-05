@@ -116,7 +116,7 @@ class PendaftarActivity : AppCompatActivity() {
         val listM: ArrayList<DataListPendaftar> = ArrayList()
         val getDataOriginal = dataPendaftar[PendaftarRepository.ORIGINAL]
         for (item in getDataOriginal!!){
-            if (item.name.lowercase().contains(newText?.lowercase() ?: "")){
+            if (item.name!!.lowercase().contains(newText?.lowercase() ?: "")){
                 listM.add(item)
             }
         }

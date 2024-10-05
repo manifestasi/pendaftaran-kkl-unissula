@@ -6,6 +6,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseUser
+import com.manifestasi.mykklunissula.data.repository.AuthRepository
 import com.manifestasi.mykklunissula.data.repository.FormkklRepository
 import com.manifestasi.mykklunissula.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,13 +16,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PendaftaranKKLViewModel @Inject constructor(
-    private val formkklRepository: FormkklRepository
+    private val formkklRepository: FormkklRepository,
+    private val authRepository: AuthRepository
 ) :ViewModel(){
     private val _uploadResult = MutableLiveData<Resource<Map<ScanType, String>>>()
     val uploadResult: LiveData<Resource<Map<ScanType, String>>> = _uploadResult
 
     private val _saveResult = MediatorLiveData<Resource<Void>>()
     val saveResult: LiveData<Resource<Void>> = _saveResult
+
+    fun getCurrentUser(): FirebaseUser? {
+        return authRepository.getCurrentUser()
+    }
 
     fun uploadMultipleImages(collection: String,imageUris: Map<ScanType, Uri?>) {
         viewModelScope.launch {

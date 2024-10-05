@@ -11,4 +11,7 @@
     <color name="green2">#C1E1C1</color>
     <color name="cardColor">#C1E1C1</color>
     <color name="darkRed">#6B1717</color>
+    <color name="review">#FFD700</color>
+    <color name="accept">#28A745</color>
+    <color name="rejected">#B22222</color>
 </resources>
