@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.manifestasi.mykklunissula.R
 import com.manifestasi.mykklunissula.databinding.ActivityProfileBinding
 import com.manifestasi.mykklunissula.util.Resource
@@ -94,6 +95,13 @@ class ProfileActivity : AppCompatActivity() {
                             }
 
                             tvStatusLn.setTextColor(ContextCompat.getColor(this@ProfileActivity, color))
+
+                            if (result.data.status == "3"){
+                                tvNoteLn.visibility = View.VISIBLE
+                                tvNoteLn.text = result.data.note.toString()
+                            } else {
+                                tvNoteLn.visibility = View.GONE
+                            }
                         }
                     }
 
@@ -136,6 +144,13 @@ class ProfileActivity : AppCompatActivity() {
                             }
 
                             tvStatusDn.setTextColor(ContextCompat.getColor(this@ProfileActivity, color))
+
+                            if (result.data.status == "3"){
+                                tvNoteDn.visibility = View.VISIBLE
+                                tvNoteDn.text = result.data.note.toString()
+                            } else {
+                                tvNoteDn.visibility = View.GONE
+                            }
                         }
                     }
                 }

@@ -29,6 +29,7 @@
             android:exported="false" />
         <activity
             android:name=".presentation.profile.ProfileActivity"
+            android:theme="@style/ProfileStyle"
             android:exported="false" />
         <activity
             android:name=".presentation.pendaftarkkl.PendaftarActivity"
@@ -36,9 +37,9 @@
         <activity
             android:name=".presentation.pendaftarankkl.KklDalamNegeriActivity"
             android:exported="false" />
-        <activity
-            android:name=".util.CameraActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".util.CameraActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".presentation.pendaftarankkl.KklLuarNegeriActivity"
             android:exported="true" />
